@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="English Helper" Height="335.999" Width="716.332">
     <Grid>
-        
+        <Grid x:Name="MainGrid" Margin="10,10,0,0">
+            <TextBox x:Name="inputTextBox" Margin="18,33,0,85" TextWrapping="Wrap" HorizontalAlignment="Left" Width="300" TabIndex="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+            <Label x:Name="inputTextLabel" Content="Enter word:" HorizontalAlignment="Left" Margin="18,0,0,0" VerticalAlignment="Top" Width="164" FontFamily="Constantia" FontSize="14"/>
+            <TextBox x:Name="outputTextBox" Margin="376,33,22,85" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+            <Button x:Name="transtateButton" Content="Translate" HorizontalAlignment="Left" Margin="218,0,0,21" Width="101" Height="39" VerticalAlignment="Bottom" FontFamily="Constantia" FontSize="13" Click="transtateButton_Click" TabIndex="2"/>
+            <Button x:Name="addToDictionaryButton" Content="Add to dictionary" Margin="376,0,0,21" Height="39" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="115" FontFamily="Constantia" FontSize="13" RenderTransformOrigin="0.478,0.925" Click="addToDictionaryButton_Click"/>
+            <Label x:Name="translationLabel" Content="Translation:" HorizontalAlignment="Left" Margin="351,0,0,0" VerticalAlignment="Top" FontFamily="Constantia" FontSize="14"/>
+            <Button x:Name="changeLanguageButton" Content="&lt;=&gt;" HorizontalAlignment="Left" Margin="328,105,0,0" VerticalAlignment="Top" Width="39" Height="39" Click="changeLanguageButton_Click" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Constantia" FontSize="14"/>
+            <Label x:Name="languageLabel" Content="Language:" HorizontalAlignment="Left" Margin="10,236,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.76,0.126" Height="39" Width="195" FontFamily="Constantia" FontSize="14"/>
+        </Grid>
+
     </Grid>
 </Window>

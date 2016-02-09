@@ -11,12 +11,12 @@
             <TextBox x:Name="inputTextBox" Margin="18,33,0,85" TextWrapping="Wrap" HorizontalAlignment="Left" Width="300" TabIndex="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Constantia" FontSize="13" AcceptsReturn="True"/>
             <Label x:Name="inputTextLabel" Content="Enter word:" HorizontalAlignment="Left" Margin="18,0,0,0" VerticalAlignment="Top" Width="164" FontFamily="Constantia" FontSize="14"/>
             <TextBox x:Name="outputTextBox" Margin="376,33,22,85" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" FontFamily="Constantia" FontSize="13"/>
-            <Button x:Name="translateButton" Content="Translate" HorizontalAlignment="Left" Margin="218,0,0,15" Width="101" Height="35" VerticalAlignment="Bottom" FontFamily="Constantia" FontSize="13" TabIndex="2" RenderTransformOrigin="0.515,0.978"/>
-            <Button x:Name="addToDictionaryButton" Content="Add to dictionary" Margin="376,0,0,15" Height="35" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="115" FontFamily="Constantia" FontSize="13" RenderTransformOrigin="0.478,0.925"/>
+            <Button x:Name="translateButton" Content="Translate" HorizontalAlignment="Left" Margin="218,0,0,15" Width="101" Height="35" VerticalAlignment="Bottom" FontFamily="Constantia" FontSize="13" TabIndex="2" RenderTransformOrigin="0.515,0.978" Background="{x:Null}"/>
+            <Button x:Name="addToDictionaryButton" Content="Add to dictionary" Margin="376,0,0,15" Height="35" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="115" FontFamily="Constantia" FontSize="13" RenderTransformOrigin="0.478,0.925" Background="{x:Null}"/>
             <Label x:Name="translationLabel" Content="Translation:" HorizontalAlignment="Left" Margin="376,0,0,0" VerticalAlignment="Top" FontFamily="Constantia" FontSize="14"/>
-            <Button x:Name="changeLanguageButton" Content="Change language" HorizontalAlignment="Left" Margin="18,0,0,15" Width="147" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Constantia" FontSize="14" Height="35" VerticalAlignment="Bottom"/>
+            <Button x:Name="changeLanguageButton" Content="Change language" HorizontalAlignment="Left" Margin="18,0,0,15" Width="147" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Constantia" FontSize="14" Height="35" VerticalAlignment="Bottom" Background="{x:Null}"/>
             <Label x:Name="languageLabel" Content="Language:" HorizontalAlignment="Left" Margin="18,0,0,42" VerticalAlignment="Bottom" RenderTransformOrigin="-0.76,0.126" Height="39" Width="195" FontFamily="Constantia" FontSize="14"/>
-            <Button x:Name="changeTextButton" Content="&lt;=&gt;" HorizontalAlignment="Left" Margin="329,104,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="0.122,0.268" Height="30"/>
+            <Button x:Name="changeTextButton" Content="&lt;=&gt;" HorizontalAlignment="Left" Margin="329,104,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="0.122,0.268" Height="30" Background="{x:Null}"/>
         </Grid>
 
     </Grid>

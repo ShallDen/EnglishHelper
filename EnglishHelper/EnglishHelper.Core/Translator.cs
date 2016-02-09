@@ -11,10 +11,11 @@ namespace EnglishHelper.Core
     {
         string LanguageOrienation { get; set; }
         string Text { get; set; }
+        string Key { get; set; }
         string GetTranslatedString();
     }
 
-    public class Translator: ITranslator
+    public class Translator : ITranslator
     {
         private string mUri = string.Empty;
         private string mAddress = string.Empty;
@@ -25,7 +26,6 @@ namespace EnglishHelper.Core
         public Translator()
         {
             mAddress = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
-            mKey = "key=trnsl.1.1.20160204T223148Z.ffe338b0a2031691.9161850fdfcb8c026e81dc08e5f3f2ffaae6a602";
             mLanguageOrienation = "en-ru";
             mText = string.Empty;
             BuildUri();
@@ -39,20 +39,37 @@ namespace EnglishHelper.Core
         public string Text
         {
             get { return mText; }
-            set { mText =  value; }
+            set { mText = value; }
+        }
+
+        public string Key
+        {
+            get { return mKey; }
+            set { mKey = value; }
         }
 
         private void BuildUri()
         {
-            mUri = string.Concat(mAddress, mKey, "&lang=", LanguageOrienation, "&text=", Text);
+            mUri = string.Concat(mAddress, "key=", mKey, "&lang=", LanguageOrienation, "&text=", Text);
         }
 
         private string GetJsonString()
         {
+            string jsonString = string.Empty;
+
             WebClient wc = new WebClient();
             wc.Encoding = Encoding.UTF8;
 
-            return wc.DownloadString(mUri);
+            try
+            {
+                jsonString = wc.DownloadString(mUri);
+            }
+            catch (WebException wex)
+            {
+                jsonString = null;
+            }
+
+            return jsonString;
         }
 
         public string GetTranslatedString()
@@ -61,6 +78,8 @@ namespace EnglishHelper.Core
 
             BuildUri();
             jsonString = GetJsonString();
+            if (string.IsNullOrEmpty(jsonString))
+                return null;
 
             return JsonHelper.Parse(jsonString);
         }

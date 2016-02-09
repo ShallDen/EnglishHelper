@@ -23,14 +23,17 @@ namespace EnglishHelper.Client
     /// 
     public interface IMainWindow
     {
-        string LanguageOrienation { get; set; }
+        string LanguageOrientation { get; set; }
         string SourceText { get; set; }
         string TranslationText { get; set; }
+
+        void CloseWindow();
 
         event EventHandler TranslateButtonClick;
         event EventHandler ChangeLanguageButtonClick;
         event EventHandler AddToDictionaryButtonClick;
         event EventHandler ChangeTextButtonClick;
+        event RoutedEventHandler FormLoaded;
     }
 
     public partial class MainWindow : Window, IMainWindow
@@ -40,20 +43,24 @@ namespace EnglishHelper.Client
             InitializeComponent();
             Translator translator = new Translator();
             MessageManager messageManager = new MessageManager();
-            MainPresenter presenter = new MainPresenter(this, translator, messageManager);
+            KeyWindow keyWindow = new KeyWindow();
+            KeyManager keyManager = new KeyManager();
+            MainPresenter presenter = new MainPresenter(this, translator, messageManager, keyWindow, keyManager);
 
             changeLanguageButton.Click += changeLanguageButton_Click;
             translateButton.Click += translaleButton_Click;
             addToDictionaryButton.Click += addToDictionaryButton_Click;
             changeTextButton.Click += changeTextButton_Click;
+            this.Loaded += MainWindow_Loaded;
         }
 
         public event EventHandler TranslateButtonClick;
         public event EventHandler ChangeLanguageButtonClick;
         public event EventHandler AddToDictionaryButtonClick;
         public event EventHandler ChangeTextButtonClick;
+        public event RoutedEventHandler FormLoaded;
 
-        public string LanguageOrienation
+        public string LanguageOrientation
         {
             get { return languageLabel.Content.ToString(); }
             set { languageLabel.Content = value; }
@@ -70,6 +77,13 @@ namespace EnglishHelper.Client
             get { return outputTextBox.Text; }
             set { outputTextBox.Text = value; }
         }
+
+        public void CloseWindow()
+        {
+            this.Close();
+        }
+
+        #region Events throwing
 
         private void changeLanguageButton_Click(object sender, RoutedEventArgs e)
         {
@@ -93,5 +107,11 @@ namespace EnglishHelper.Client
             if (ChangeTextButtonClick != null)
                 ChangeTextButtonClick(this, EventArgs.Empty);
         }
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (FormLoaded != null)
+                FormLoaded(this, e);
+        }
+        #endregion
     }
 }

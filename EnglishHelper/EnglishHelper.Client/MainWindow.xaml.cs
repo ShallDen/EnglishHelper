@@ -20,48 +20,78 @@ namespace EnglishHelper.Client
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    /// 
+    public interface IMainWindow
     {
-        private Translator translator = new Translator();
+        string LanguageOrienation { get; set; }
+        string SourceText { get; set; }
+        string TranslationText { get; set; }
 
+        event EventHandler TranslateButtonClick;
+        event EventHandler ChangeLanguageButtonClick;
+        event EventHandler AddToDictionaryButtonClick;
+        event EventHandler ChangeTextButtonClick;
+    }
+
+    public partial class MainWindow : Window, IMainWindow
+    {
         public MainWindow()
         {
             InitializeComponent();
-            languageLabel.Content = "Language: English->Russian";
+            Translator translator = new Translator();
+            MessageManager messageManager = new MessageManager();
+            MainPresenter presenter = new MainPresenter(this, translator, messageManager);
+
+            changeLanguageButton.Click += changeLanguageButton_Click;
+            translateButton.Click += translaleButton_Click;
+            addToDictionaryButton.Click += addToDictionaryButton_Click;
+            changeTextButton.Click += changeTextButton_Click;
         }
 
-        private void transtateButton_Click(object sender, RoutedEventArgs e)
+        public event EventHandler TranslateButtonClick;
+        public event EventHandler ChangeLanguageButtonClick;
+        public event EventHandler AddToDictionaryButtonClick;
+        public event EventHandler ChangeTextButtonClick;
+
+        public string LanguageOrienation
         {
-            translator.Text = inputTextBox.Text;
-            outputTextBox.Text = translator.GetTranslatedString();
+            get { return languageLabel.Content.ToString(); }
+            set { languageLabel.Content = value; }
+        }
+
+        public string SourceText
+        {
+            get { return inputTextBox.Text; }
+            set { inputTextBox.Text = value; }
+        }
+
+        public string TranslationText
+        {
+            get { return outputTextBox.Text; }
+            set { outputTextBox.Text = value; }
         }
 
         private void changeLanguageButton_Click(object sender, RoutedEventArgs e)
         {
-            if (translator.Language == "en-ru")
-            {
-                translator.Language = "ru-en";
-                languageLabel.Content = "Language: Russian->English";
-                return;
-            }
-            if (translator.Language == "ru-en")
-            {
-                translator.Language = "en-ru";
-                languageLabel.Content = "Language: English->Russian";
-                return;
-            }
+            if (ChangeLanguageButtonClick != null)
+                ChangeLanguageButtonClick(this, EventArgs.Empty);
+        }
+        private void translaleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TranslateButtonClick != null)
+                TranslateButtonClick(this, EventArgs.Empty);
         }
 
         private void addToDictionaryButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This haven't implemented yet :)");
+            if (AddToDictionaryButtonClick != null)
+                AddToDictionaryButtonClick(this, EventArgs.Empty);
         }
 
         private void changeTextButton_Click(object sender, RoutedEventArgs e)
         {
-            inputTextBox.Text = outputTextBox.Text;
-            translator.Text = inputTextBox.Text;
-            outputTextBox.Text = translator.GetTranslatedString();
+            if (ChangeTextButtonClick != null)
+                ChangeTextButtonClick(this, EventArgs.Empty);
         }
     }
 }

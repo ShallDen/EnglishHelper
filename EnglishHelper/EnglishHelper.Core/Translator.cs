@@ -7,26 +7,33 @@ using System.Net;
 
 namespace EnglishHelper.Core
 {
-    public class Translator
+    public interface ITranslator
+    {
+        string LanguageOrienation { get; set; }
+        string Text { get; set; }
+        string GetTranslatedString();
+    }
+
+    public class Translator: ITranslator
     {
         private string mUri = string.Empty;
         private string mAddress = string.Empty;
         private string mKey = string.Empty;
-        private string mLanguage = string.Empty;
+        private string mLanguageOrienation = string.Empty;
         private string mText = string.Empty;
 
         public Translator()
         {
             mAddress = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
             mKey = "key=trnsl.1.1.20160204T223148Z.ffe338b0a2031691.9161850fdfcb8c026e81dc08e5f3f2ffaae6a602";
-            mLanguage = "en-ru";
+            mLanguageOrienation = "en-ru";
             mText = string.Empty;
             BuildUri();
         }
-        public string Language
+        public string LanguageOrienation
         {
-            get { return mLanguage; }
-            set { mLanguage = value; }
+            get { return mLanguageOrienation; }
+            set { mLanguageOrienation = value; }
         }
 
         public string Text
@@ -37,7 +44,7 @@ namespace EnglishHelper.Core
 
         private void BuildUri()
         {
-            mUri = string.Concat(mAddress, mKey, "&lang=", Language, "&text=", Text);
+            mUri = string.Concat(mAddress, mKey, "&lang=", LanguageOrienation, "&text=", Text);
         }
 
         private string GetJsonString()

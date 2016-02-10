@@ -32,6 +32,7 @@ namespace EnglishHelper.Client
         public KeyWindow()
         {
             InitializeComponent();
+
             applyButton.Click += ApplyButton_Click;
             this.Closed += KeyWindow_Closed;
         }
@@ -49,6 +50,7 @@ namespace EnglishHelper.Client
         {
             this.ShowDialog();
         }
+
         public void CloseWindow()
         {
             this.Close();

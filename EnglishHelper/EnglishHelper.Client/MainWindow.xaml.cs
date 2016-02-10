@@ -52,6 +52,7 @@ namespace EnglishHelper.Client
             addToDictionaryButton.Click += addToDictionaryButton_Click;
             changeTextButton.Click += changeTextButton_Click;
             this.Loaded += MainWindow_Loaded;
+            this.Closed += MainWindow_Closed;
         }
 
         public event EventHandler TranslateButtonClick;
@@ -81,6 +82,11 @@ namespace EnglishHelper.Client
         public void CloseWindow()
         {
             this.Close();
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
         }
 
         #region Events throwing

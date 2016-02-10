@@ -66,6 +66,7 @@ namespace EnglishHelper.Core
             }
             catch (WebException wex)
             {
+                //Log wex
                 jsonString = null;
             }
 

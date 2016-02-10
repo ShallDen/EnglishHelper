@@ -29,7 +29,7 @@ namespace EnglishHelper.Client
             mainWindow.AddToDictionaryButtonClick += MainWindow_AddToDictionaryButtonClick;
             mainWindow.ChangeTextButtonClick += MainWindow_ChangeTextButtonClick;
             mainWindow.FormLoaded += MainWindow_FormLoaded;
-            
+
             mainWindow.LanguageOrientation = "Language: English->Russian";
 
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
@@ -48,10 +48,12 @@ namespace EnglishHelper.Client
                 return;
             }
 
-            if(keyManager.ValidateKey())
+            if (keyManager.ValidateKey())
             {
                 translator.Key = keyManager.Key;
                 keyManager.IsKeyValid = true;
+
+                keyManager.SaveKey();
                 keyWindow.CloseWindow();
             }
             else
@@ -74,8 +76,34 @@ namespace EnglishHelper.Client
 
         private void MainWindow_FormLoaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            keyWindow.OpenWindow();
+            bool isFileExist = keyManager.CreateKeyFile();
+
+            if (!isFileExist)
+            {
+                // Log - Unable to load key
+                keyWindow.OpenWindow();
+                return;
+            }
+
+            keyManager.LoadKey();
+
+            if (string.IsNullOrEmpty(keyManager.Key))
+                keyWindow.OpenWindow();
+            else if (keyManager.ValidateKey())
+            {
+                translator.Key = keyManager.Key;
+                keyManager.IsKeyValid = true;
+            }
+            else
+            {
+                messageManager.ShowError("Key isn't valid");
+                keyManager.Key = keyWindow.Key = string.Empty;
+                keyManager.IsKeyValid = false;
+
+                keyWindow.OpenWindow();
+            }
         }
+    
 
         private void MainWindow_ChangeLanguageButtonClick(object sender, EventArgs e)
         {

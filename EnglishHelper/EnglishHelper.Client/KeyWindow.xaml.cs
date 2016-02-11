@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Navigation;
+using System.Diagnostics;
 
 namespace EnglishHelper.Client
 {
@@ -54,6 +56,14 @@ namespace EnglishHelper.Client
         public void CloseWindow()
         {
             this.Close();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            if (sender.GetType() != typeof(Hyperlink))
+                return;
+            string link = ((Hyperlink)sender).NavigateUri.ToString();
+            Process.Start(link);
         }
 
         #region Events throwing

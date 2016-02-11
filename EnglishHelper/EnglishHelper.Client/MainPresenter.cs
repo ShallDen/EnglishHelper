@@ -31,13 +31,11 @@ namespace EnglishHelper.Client
             mainWindow.AddToDictionaryButtonClick += MainWindow_AddToDictionaryButtonClick;
             mainWindow.ChangeTextButtonClick += MainWindow_ChangeTextButtonClick;
             mainWindow.FormLoaded += MainWindow_FormLoaded;
-
             mainWindow.LanguageOrientation = "Language: English->Russian";
 
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
             keyWindow.WindowClosed += KeyWindow_WindowClosed;
-
             keyWindow.KeyHyperLink = "https://tech.yandex.com/translate";
         }
 

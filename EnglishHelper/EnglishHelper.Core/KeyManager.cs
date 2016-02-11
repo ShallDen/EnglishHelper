@@ -58,7 +58,7 @@ namespace EnglishHelper.Core
 
         public void LoadKey()
         {
-            Key = (SerializationHelper.Deserialize(userKeyLocation) as KeyManager).Key;
+            Key = (SerializationHelper.Deserialize(userKeyLocation, typeof(KeyManager)) as KeyManager).Key;
             Key = Key ?? string.Empty;
         }
 

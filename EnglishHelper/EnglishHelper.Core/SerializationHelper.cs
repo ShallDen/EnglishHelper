@@ -14,7 +14,8 @@ namespace EnglishHelper.Core
         {
             try
             {
-                XmlSerializer xmlFormat = new XmlSerializer(typeof(KeyManager));
+                XmlSerializer xmlFormat = new XmlSerializer(obj.GetType());
+                
                 using (var fStream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     xmlFormat.Serialize(fStream, obj);
@@ -26,11 +27,11 @@ namespace EnglishHelper.Core
             }
         }
 
-        public static Object Deserialize(string filename)
+        public static Object Deserialize(string filename, Type type)
         {
             try
             {
-                XmlSerializer xmlFormat = new XmlSerializer(typeof(KeyManager));
+                XmlSerializer xmlFormat = new XmlSerializer(type);
                 using (var fStream = File.OpenRead(filename))
                 {
                     return xmlFormat.Deserialize(fStream);

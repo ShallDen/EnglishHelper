@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EnglishHelper.Core;
+using System.Diagnostics;
+using System.Windows.Navigation;
 
 namespace EnglishHelper.Client
 {
@@ -33,8 +35,12 @@ namespace EnglishHelper.Client
             mainWindow.LanguageOrientation = "Language: English->Russian";
 
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
+            keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
             keyWindow.WindowClosed += KeyWindow_WindowClosed;
+
+            keyWindow.KeyHyperLink = "https://tech.yandex.com/translate";
         }
+
 
         #region Key Window event handlers
 
@@ -62,6 +68,11 @@ namespace EnglishHelper.Client
                 keyManager.Key = keyWindow.Key = string.Empty;
                 keyManager.IsKeyValid = false;
             }
+        }
+    
+        private void KeyWindow_GetKeyHyperLinkClick(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(keyWindow.KeyHyperLink);
         }
 
         private void KeyWindow_WindowClosed(object sender, EventArgs e)

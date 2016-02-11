@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
-using System.Diagnostics;
 
 namespace EnglishHelper.Client
 {
@@ -23,9 +22,11 @@ namespace EnglishHelper.Client
     public interface IKeyWindow
     {
         string Key { get; set; }
+        string KeyHyperLink { get; set; }
         void OpenWindow();
         void CloseWindow();
         event EventHandler ApplyButtonClick;
+        event RequestNavigateEventHandler GetKeyHyperLinkClick;
         event EventHandler WindowClosed;
     }
 
@@ -36,10 +37,12 @@ namespace EnglishHelper.Client
             InitializeComponent();
 
             applyButton.Click += ApplyButton_Click;
+            getKeyHyperlink.RequestNavigate += GetKeyHyperLink_Clicked;
             this.Closed += KeyWindow_Closed;
         }
 
         public event EventHandler ApplyButtonClick;
+        public event RequestNavigateEventHandler GetKeyHyperLinkClick;
         public event EventHandler WindowClosed;
 
         public string Key
@@ -47,6 +50,8 @@ namespace EnglishHelper.Client
             get { return keyTextBox.Text; }
             set { keyTextBox.Text = value; }
         }
+
+        public string KeyHyperLink { get; set; }
 
         public void OpenWindow()
         {
@@ -58,27 +63,27 @@ namespace EnglishHelper.Client
             this.Close();
         }
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            if (sender.GetType() != typeof(Hyperlink))
-                return;
-            string link = ((Hyperlink)sender).NavigateUri.ToString();
-            Process.Start(link);
-        }
-
         #region Events throwing
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
             if (ApplyButtonClick != null)
-                ApplyButtonClick(this, EventArgs.Empty);
+                ApplyButtonClick(this, e);
         }
+
+        private void GetKeyHyperLink_Clicked(object sender, RequestNavigateEventArgs e)
+        {
+            if (GetKeyHyperLinkClick != null)
+                GetKeyHyperLinkClick(this, e);
+        }
+
         private void KeyWindow_Closed(object sender, EventArgs e)
         {
             if (WindowClosed != null)
-                WindowClosed(this, EventArgs.Empty);
+                WindowClosed(this, e);
         }
 
         #endregion
+
     }
 }

@@ -39,33 +39,6 @@ namespace EnglishHelper.Client
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
             keyWindow.WindowClosed += KeyWindow_WindowClosed;
             keyWindow.KeyHyperLink = "https://tech.yandex.com/translate";
-
-
-            //var count = dictionaryManager.WordCount;
-            //dictionaryManager.AddWord("milk");
-            //dictionaryManager.AddWord("milf");
-            //dictionaryManager.DeleteWord("milk");
-            //dictionaryManager.DeleteWord("milk");
-            //dictionaryManager.GetTranslation("milk");
-            //dictionaryManager.AddWord("milk");
-            //dictionaryManager.GetTranslation("milk");
-            //count = dictionaryManager.WordCount;
-
-
-           // dictionary.WordDictionary = new SerializableDictionary<string, string>();
-            //bool isFileExist = dictionaryManager.CreateDictionaryFile();
-
-            //dictionaryManager.LoadDictionaryFromFile();
-
-            //if (dictionaryManager.WordDictionary == null)
-            //{ 
-            //    //"Dictionary isn't valid");
-            //}
-
-            //dictionaryManager.AddWord("milk");
-            //int count = dictionaryManager.WordCount;
-            //dictionaryManager.AddWord("love");
-
         }
 
 
@@ -114,6 +87,12 @@ namespace EnglishHelper.Client
 
         private void MainWindow_FormLoaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            InitializeKey();
+            InitializeDictionary();
+        }
+
+        private void InitializeKey()
+        {
             bool isFileExist = keyManager.CreateKeyFile();
 
             if (!isFileExist)
@@ -141,7 +120,17 @@ namespace EnglishHelper.Client
                 keyWindow.OpenWindow();
             }
         }
-    
+        private void InitializeDictionary()
+        {
+            bool isFileExist = dictionaryManager.CreateDictionaryFile();
+
+            dictionaryManager.LoadDictionaryFromFile();
+
+            if (dictionaryManager.WordDictionary == null)
+            {
+                //"Dictionary isn't valid");
+            }
+        }
 
         private void MainWindow_ChangeLanguageButtonClick(object sender, EventArgs e)
         {
@@ -167,7 +156,20 @@ namespace EnglishHelper.Client
 
         private void MainWindow_AddToDictionaryButtonClick(object sender, EventArgs e)
         {
-            messageManager.ShowMessage("This haven't implemented yet :)");
+            dictionaryManager.AddWord(mainWindow.SourceText);
+
+            bool isAdded = dictionaryManager.IsContainWord(mainWindow.SourceText);
+
+            if(isAdded)
+            {
+                messageManager.ShowMessage("Word '" + mainWindow.SourceText + "' was added to dictionary.");
+                //log that ok
+                //Show it on form
+            }
+            else
+            {
+                messageManager.ShowError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
+            }
         }
 
         private void MainWindow_ChangeTextButtonClick(object sender, EventArgs e)

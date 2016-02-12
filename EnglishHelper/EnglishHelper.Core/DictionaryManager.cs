@@ -12,6 +12,7 @@ namespace EnglishHelper.Core
     {
         SerializableDictionary<string, string> WordDictionary { get; set; }
         int WordCount { get; }
+        bool IsContainWord(string word);
         void AddWord(string word);
         void DeleteWord(string word);
         string GetTranslation(string word);
@@ -39,25 +40,19 @@ namespace EnglishHelper.Core
         {
             wordDictionary = new SerializableDictionary<string, string>();
         }
-        //{
-        //    wordDictionary = new SerializableDictionary<string, string>();
-        //    bool isFileExist = CreateDictionaryFile();
-
-        //    LoadDictionaryFromFile();
-
-        //    if (wordDictionary != null)
-        //        return;
-        //    else
-        //    {
-        //        //"Dictionary isn't valid");
-        //    }
-        //}
 
         public int WordCount { get { return wordDictionary.Count; } }
 
+        public bool IsContainWord(string word)
+        {
+            return wordDictionary.ContainsKey(word);
+        }
+
         public void AddWord(string word)
         {
-            if (!wordDictionary.ContainsKey(word))
+            if (string.IsNullOrWhiteSpace(word))
+                return;
+            else if (!IsContainWord(word))
             {
                 Translator translator = new Translator();
                 translator.Key = KeyManager.LoadKey();
@@ -72,7 +67,7 @@ namespace EnglishHelper.Core
 
         public void DeleteWord(string word)
         {
-            if (wordDictionary.ContainsKey(word))
+            if (IsContainWord(word))
             {
                 wordDictionary.Remove(word);
             }
@@ -82,7 +77,7 @@ namespace EnglishHelper.Core
         {
             string translation = string.Empty;
 
-            if(wordDictionary.ContainsKey(word))
+            if(IsContainWord(word))
             {
                 translation = wordDictionary.Where(c=>c.Key == word).Select(c=>c.Value).First();
             }

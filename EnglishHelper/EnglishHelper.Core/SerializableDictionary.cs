@@ -32,11 +32,11 @@ namespace EnglishHelper.Core
 
             while (reader.NodeType != XmlNodeType.EndElement)
             {
-                reader.ReadStartElement("item");
-                reader.ReadStartElement("key");
+                reader.ReadStartElement("Entry");
+                reader.ReadStartElement("Word");
                 var key = (TKey)keySerializer.Deserialize(reader);
                 reader.ReadEndElement();
-                reader.ReadStartElement("value");
+                reader.ReadStartElement("Translation");
                 var value = (TValue)valueSerializer.Deserialize(reader);
                 reader.ReadEndElement();
                 Add(key, value);
@@ -53,11 +53,11 @@ namespace EnglishHelper.Core
 
             foreach (TKey key in Keys)
             {
-                writer.WriteStartElement("item");
-                writer.WriteStartElement("key");
+                writer.WriteStartElement("Entry");
+                writer.WriteStartElement("Word");
                 keySerializer.Serialize(writer, key);
                 writer.WriteEndElement();
-                writer.WriteStartElement("value");
+                writer.WriteStartElement("Translation");
                 TValue value = this[key];
                 valueSerializer.Serialize(writer, value);
                 writer.WriteEndElement();

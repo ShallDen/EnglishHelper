@@ -13,7 +13,7 @@ namespace EnglishHelper.Core
         List<Entry> WordDictionary { get; set; }
         int WordCount { get; }
         bool IsContainWord(string word);
-        void AddWord(string word);
+        bool AddWord(string word);
         void DeleteWord(string word);
         string GetTranslation(string word);
         bool CreateDictionaryFile();
@@ -58,21 +58,21 @@ namespace EnglishHelper.Core
             return isContains;
         }
 
-        public void AddWord(string word)
+        public bool AddWord(string word)
         {
             if (string.IsNullOrWhiteSpace(word))
-                return;
-            else if (!IsContainWord(word))
+                return false;
+            else if (IsContainWord(word))
+                return false;      //throw new Exception("Dictionary has already contains " + word);
+            else
             {
                 Translator translator = new Translator();
                 translator.Key = KeyManager.LoadKey();
                 string translation = translator.GetTranslatedString(word);
                 wordDictionary.Add(new Entry { Word = word, Translation = translation });
                 SaveDictionaryToFile();
+                return true;
             }
-                
-            //else
-                //throw new Exception("Dictionary has already contains " + word);
         }
 
         public void DeleteWord(string word)

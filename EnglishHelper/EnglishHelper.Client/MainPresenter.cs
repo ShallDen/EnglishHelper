@@ -156,9 +156,7 @@ namespace EnglishHelper.Client
 
         private void MainWindow_AddToDictionaryButtonClick(object sender, EventArgs e)
         {
-            dictionaryManager.AddWord(mainWindow.SourceText);
-
-            bool isAdded = dictionaryManager.IsContainWord(mainWindow.SourceText);
+            bool isAdded = dictionaryManager.AddWord(mainWindow.SourceText);
 
             if(isAdded)
             {

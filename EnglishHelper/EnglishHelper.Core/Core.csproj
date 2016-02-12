@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryManager.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="KeyManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializableDictionary.cs" />
     <Compile Include="SerializationHelper.cs" />
     <Compile Include="Translator.cs" />
   </ItemGroup>

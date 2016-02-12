@@ -12,7 +12,7 @@ namespace EnglishHelper.Core
         string LanguageOrienation { get; set; }
         string Text { get; set; }
         string Key { get; set; }
-        string GetTranslatedString();
+        string GetTranslatedString(string word);
     }
 
     public class Translator : ITranslator
@@ -73,8 +73,9 @@ namespace EnglishHelper.Core
             return jsonString;
         }
 
-        public string GetTranslatedString()
+        public string GetTranslatedString(string word)
         {
+            this.Text = word;
             string jsonString = string.Empty;
 
             BuildUri();

@@ -13,7 +13,7 @@ namespace EnglishHelper.Core
         bool IsKeyValid { get; set; }
         string Key { get; set; }
         bool CreateKeyFile();
-        void LoadKey();
+        void LoadKeyFromFile();
         void SaveKey();
         bool ValidateKey();
     }
@@ -30,8 +30,8 @@ namespace EnglishHelper.Core
 
         public bool ValidateKey()
         {
-            Translator translator = new Translator { Text = "Ping", Key = Key};
-            bool isValid = string.IsNullOrEmpty(translator.GetTranslatedString()) ? false : true;
+            Translator translator = new Translator { Key = Key };
+            bool isValid = string.IsNullOrEmpty(translator.GetTranslatedString("Ping")) ? false : true;
             return isValid;
         }
 
@@ -56,11 +56,14 @@ namespace EnglishHelper.Core
             SerializationHelper.Serialize(userKeyLocation, this);
         }
 
-        public void LoadKey()
+        public void LoadKeyFromFile()
         {
-            Key = (SerializationHelper.Deserialize(userKeyLocation, typeof(KeyManager)) as KeyManager).Key;
-            Key = Key ?? string.Empty;
+            Key = LoadKey();
         }
-
+        public static string LoadKey()
+        {
+            string key = (SerializationHelper.Deserialize(userKeyLocation, typeof(KeyManager)) as KeyManager).Key;
+            return key ?? string.Empty;
+        }
     }
 }

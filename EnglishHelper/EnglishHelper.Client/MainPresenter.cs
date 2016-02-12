@@ -16,15 +16,17 @@ namespace EnglishHelper.Client
         private readonly IMessageManager messageManager;
         private readonly IKeyWindow keyWindow;
         private readonly IKeyManager keyManager;
+        private readonly IDictionaryManager dictionaryManager;
 
         public MainPresenter(IMainWindow _mainWindow, ITranslator _translator, IMessageManager _messageManager,
-                             IKeyWindow _keyWindow, IKeyManager _keyManager)
+                             IKeyWindow _keyWindow, IKeyManager _keyManager, IDictionaryManager _dictionaryManager)
         {
             mainWindow = _mainWindow;
             translator = _translator;
             messageManager = _messageManager;
             keyWindow = _keyWindow;
             keyManager = _keyManager;
+            dictionaryManager = _dictionaryManager;
 
             mainWindow.ChangeLanguageButtonClick += MainWindow_ChangeLanguageButtonClick;
             mainWindow.TranslateButtonClick += MainWindow_TranslateButtonClick;
@@ -37,6 +39,33 @@ namespace EnglishHelper.Client
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
             keyWindow.WindowClosed += KeyWindow_WindowClosed;
             keyWindow.KeyHyperLink = "https://tech.yandex.com/translate";
+
+
+            //var count = dictionaryManager.WordCount;
+            //dictionaryManager.AddWord("milk");
+            //dictionaryManager.AddWord("milf");
+            //dictionaryManager.DeleteWord("milk");
+            //dictionaryManager.DeleteWord("milk");
+            //dictionaryManager.GetTranslation("milk");
+            //dictionaryManager.AddWord("milk");
+            //dictionaryManager.GetTranslation("milk");
+            //count = dictionaryManager.WordCount;
+
+
+           // dictionary.WordDictionary = new SerializableDictionary<string, string>();
+            //bool isFileExist = dictionaryManager.CreateDictionaryFile();
+
+            //dictionaryManager.LoadDictionaryFromFile();
+
+            //if (dictionaryManager.WordDictionary == null)
+            //{ 
+            //    //"Dictionary isn't valid");
+            //}
+
+            //dictionaryManager.AddWord("milk");
+            //int count = dictionaryManager.WordCount;
+            //dictionaryManager.AddWord("love");
+
         }
 
 
@@ -94,7 +123,7 @@ namespace EnglishHelper.Client
                 return;
             }
 
-            keyManager.LoadKey();
+            keyManager.LoadKeyFromFile();
 
             if (string.IsNullOrEmpty(keyManager.Key))
                 keyWindow.OpenWindow();
@@ -131,8 +160,7 @@ namespace EnglishHelper.Client
         }
         private void MainWindow_TranslateButtonClick(object sender, EventArgs e)
         {
-            translator.Text = mainWindow.SourceText;
-            string translatedString = translator.GetTranslatedString();
+            string translatedString = translator.GetTranslatedString(mainWindow.SourceText);
             if (!string.IsNullOrEmpty(translatedString))
                 mainWindow.TranslationText = translatedString;
         }

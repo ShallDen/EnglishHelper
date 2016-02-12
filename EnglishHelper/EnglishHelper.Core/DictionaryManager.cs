@@ -10,7 +10,7 @@ namespace EnglishHelper.Core
 {
     public interface IDictionaryManager
     {
-        SerializableDictionary<string, string> WordDictionary { get; set; }
+        List<Entry> WordDictionary { get; set; }
         int WordCount { get; }
         bool IsContainWord(string word);
         void AddWord(string word);
@@ -24,13 +24,20 @@ namespace EnglishHelper.Core
     }
 
     [Serializable]
+    public class Entry
+    {
+        public string Word { get; set; }
+        public string Translation { get; set; }
+    }
+
+    [Serializable]
     [XmlRootAttribute("DictionaryManager")]
     public class DictionaryManager: IDictionaryManager
     {
-        private SerializableDictionary<string, string> wordDictionary;
+        private List<Entry> wordDictionary;
         private static string dictionaryLocation = "Dictionary.xml";
 
-        public SerializableDictionary<string, string> WordDictionary
+        public List<Entry> WordDictionary
         {
             get { return wordDictionary; }
             set { wordDictionary = value; }
@@ -38,14 +45,17 @@ namespace EnglishHelper.Core
 
         public DictionaryManager()
         {
-            wordDictionary = new SerializableDictionary<string, string>();
+            wordDictionary = new List<Entry>();
         }
 
         public int WordCount { get { return wordDictionary.Count; } }
 
         public bool IsContainWord(string word)
         {
-            return wordDictionary.ContainsKey(word);
+            bool isContains = false;
+            if(wordDictionary.Count > 0)
+                isContains = wordDictionary.Where(c=>c.Word.ToLower() == word.ToLower()).Any();
+            return isContains;
         }
 
         public void AddWord(string word)
@@ -57,7 +67,7 @@ namespace EnglishHelper.Core
                 Translator translator = new Translator();
                 translator.Key = KeyManager.LoadKey();
                 string translation = translator.GetTranslatedString(word);
-                wordDictionary.Add(word, translation);
+                wordDictionary.Add(new Entry { Word = word, Translation = translation });
                 SaveDictionaryToFile();
             }
                 
@@ -69,7 +79,7 @@ namespace EnglishHelper.Core
         {
             if (IsContainWord(word))
             {
-                wordDictionary.Remove(word);
+                wordDictionary.Remove(wordDictionary.Where(c=>c.Word.ToLower() == word.ToLower()).First());
             }
         }
 
@@ -79,7 +89,7 @@ namespace EnglishHelper.Core
 
             if(IsContainWord(word))
             {
-                translation = wordDictionary.Where(c=>c.Key == word).Select(c=>c.Value).First();
+                translation = wordDictionary.Where(c=>c.Word.ToLower() == word.ToLower()).Select(c=>c.Translation).First();
             }
 
             return translation;

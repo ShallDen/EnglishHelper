@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
+using System.Configuration;
 
 namespace EnglishHelper.Core
 {
@@ -17,9 +18,7 @@ namespace EnglishHelper.Core
         void DeleteWord(string word);
         string GetTranslation(string word);
         bool CreateDictionaryFile();
-
         void SaveDictionaryToFile();
-
         void LoadDictionaryFromFile();
     }
 
@@ -35,7 +34,7 @@ namespace EnglishHelper.Core
     public class DictionaryManager: IDictionaryManager
     {
         private List<Entry> wordDictionary;
-        private static string dictionaryLocation = "Dictionary.xml";
+        private static string dictionaryLocation = ConfigurationManager.AppSettings["DictionaryFileName"];
 
         public List<Entry> WordDictionary
         {

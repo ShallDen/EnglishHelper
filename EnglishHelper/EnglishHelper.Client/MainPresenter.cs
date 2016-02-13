@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Windows;
 using EnglishHelper.Core;
 using System.Diagnostics;
 using System.Windows.Navigation;
+using System.Configuration;
 
 namespace EnglishHelper.Client
 {
@@ -34,7 +36,6 @@ namespace EnglishHelper.Client
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
             keyWindow.WindowClosed += KeyWindow_WindowClosed;
-            keyWindow.KeyHyperLink = "https://tech.yandex.com/translate";
         }
 
 

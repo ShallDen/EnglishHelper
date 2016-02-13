@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
+using System.Configuration;
 
 namespace EnglishHelper.Core
 {
@@ -22,7 +23,7 @@ namespace EnglishHelper.Core
     [XmlRootAttribute("KeyManager")]
     public class KeyManager : IKeyManager
     {
-        private static string userKeyLocation = "API key.xml";
+        private static string userKeyLocation = ConfigurationManager.AppSettings["KeyFileName"];
 
         public string Key { get; set; }
         [XmlIgnore]

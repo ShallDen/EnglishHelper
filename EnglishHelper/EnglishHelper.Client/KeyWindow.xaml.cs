@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
+using System.Configuration;
 
 namespace EnglishHelper.Client
 {
@@ -51,7 +52,11 @@ namespace EnglishHelper.Client
             set { keyTextBox.Text = value; }
         }
 
-        public string KeyHyperLink { get; set; }
+        public string KeyHyperLink
+        {
+            get { return ConfigurationManager.AppSettings["KeyHyperLink"]; }
+            set { }
+        }
 
         public void OpenWindow()
         {

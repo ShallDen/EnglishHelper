@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EnglishHelper.Core;
 using System.Diagnostics;
 using System.Windows.Navigation;
@@ -46,10 +42,61 @@ namespace EnglishHelper.Client
 
         private void KeyWindow_ApplyButtonClick(object sender, EventArgs e)
         {
+            ApplyKey();
+        }
+
+        private void KeyWindow_GetKeyHyperLinkClick(object sender, RequestNavigateEventArgs e)
+        {
+            OpenHyperink();
+        }
+
+        private void KeyWindow_WindowClosed(object sender, EventArgs e)
+        {
+            if (!keyManager.IsKeyValid)
+                mainWindow.CloseWindow();
+        }
+
+        #endregion
+
+        #region Main Window event handlers
+
+        private void MainWindow_FormLoaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            InitializeKey();
+            InitializeDictionary();
+        }
+     
+        private void MainWindow_ChangeLanguageButtonClick(object sender, EventArgs e)
+        {
+            ChangeTranslationOrientation();
+        }
+
+        private void MainWindow_TranslateButtonClick(object sender, EventArgs e)
+        {
+            Translate();
+        }
+
+        private void MainWindow_AddToDictionaryButtonClick(object sender, EventArgs e)
+        {
+            AddToDictionary();
+        }
+
+        private void MainWindow_ChangeTextButtonClick(object sender, EventArgs e)
+        {
+            ChangeText(sender, e);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void ApplyKey()
+        {
             keyManager.Key = keyWindow.Key.Replace("\r\n", "").Replace(" ", "");
 
             if (string.IsNullOrEmpty(keyManager.Key))
             {
+                Logger.LogWarning("Key is null or empty. Try to enter anothe key.");
                 keyWindow.Key = string.Empty;
                 return;
             }
@@ -69,35 +116,22 @@ namespace EnglishHelper.Client
                 keyManager.IsKeyValid = false;
             }
         }
-    
-        private void KeyWindow_GetKeyHyperLinkClick(object sender, RequestNavigateEventArgs e)
+
+        private void OpenHyperink()
         {
+            Logger.LogInfo("Opening link: " + keyWindow.KeyHyperLink);
             Process.Start(keyWindow.KeyHyperLink);
-        }
-
-        private void KeyWindow_WindowClosed(object sender, EventArgs e)
-        {
-            if (!keyManager.IsKeyValid)
-                mainWindow.CloseWindow();
-        }
-
-        #endregion
-
-        #region Main Window event handlers
-
-        private void MainWindow_FormLoaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            InitializeKey();
-            InitializeDictionary();
         }
 
         private void InitializeKey()
         {
+            Logger.LogInfo("Initialing key...");
+
             bool isFileExist = keyManager.CreateKeyFile();
 
             if (!isFileExist)
             {
-                // Log - Unable to load key
+                Logger.LogWarning("Unable to load key. Opening Key window for getting new api key...");
                 keyWindow.OpenWindow();
                 return;
             }
@@ -105,75 +139,93 @@ namespace EnglishHelper.Client
             keyManager.LoadKeyFromFile();
 
             if (string.IsNullOrEmpty(keyManager.Key))
+            {
+                Logger.LogInfo("Key is null or empty. Opening Key window for getting new api key...");
                 keyWindow.OpenWindow();
+            }
             else if (keyManager.ValidateKey())
             {
                 translator.Key = keyManager.Key;
                 keyManager.IsKeyValid = true;
+                Logger.LogInfo("Key was successfully validated.");
+                Logger.LogInfo("Key was initialized.");
             }
             else
             {
                 messageManager.ShowError("Key isn't valid");
                 keyManager.Key = keyWindow.Key = string.Empty;
                 keyManager.IsKeyValid = false;
+                Logger.LogError("Key isn't valid");
 
                 keyWindow.OpenWindow();
             }
         }
+
         private void InitializeDictionary()
         {
+            Logger.LogInfo("Initialing existing dictionary...");
+
             bool isFileExist = dictionaryManager.CreateDictionaryFile();
 
             dictionaryManager.LoadDictionaryFromFile();
 
             if (dictionaryManager.WordDictionary == null)
             {
-                //"Dictionary isn't valid");
+                Logger.LogError("Dictionary isn't valid");
+                return;
             }
+
+            Logger.LogInfo("Dictionary was initialized.");
         }
 
-        private void MainWindow_ChangeLanguageButtonClick(object sender, EventArgs e)
+        private void ChangeTranslationOrientation()
         {
             if (translator.LanguageOrienation == "en-ru")
             {
                 translator.LanguageOrienation = "ru-en";
                 mainWindow.LanguageOrientation = "Language: Russian->English";
+                Logger.LogInfo("Changing translate orientation to " + translator.LanguageOrienation);
                 return;
             }
             if (translator.LanguageOrienation == "ru-en")
             {
                 translator.LanguageOrienation = "en-ru";
                 mainWindow.LanguageOrientation = "Language: English->Russian";
+                Logger.LogInfo("Changing translate orientation to " + translator.LanguageOrienation);
                 return;
             }
         }
-        private void MainWindow_TranslateButtonClick(object sender, EventArgs e)
+
+        private void Translate()
         {
-            string translatedString = translator.GetTranslatedString(mainWindow.SourceText);
-            if (!string.IsNullOrEmpty(translatedString))
-                mainWindow.TranslationText = translatedString;
+            if (!string.IsNullOrWhiteSpace(mainWindow.SourceText))
+            {
+                string translatedString = translator.GetTranslatedString(mainWindow.SourceText);
+                if (!string.IsNullOrEmpty(translatedString))
+                    mainWindow.TranslationText = translatedString;
+            }
         }
 
-        private void MainWindow_AddToDictionaryButtonClick(object sender, EventArgs e)
+        private void AddToDictionary()
         {
             bool isAdded = dictionaryManager.AddWord(mainWindow.SourceText);
 
-            if(isAdded)
+            if (isAdded)
             {
+                Logger.LogInfo("Word '" + mainWindow.SourceText + "' was added to dictionary.");
                 messageManager.ShowMessage("Word '" + mainWindow.SourceText + "' was added to dictionary.");
-                //log that ok
-                //Show it on form
             }
             else
             {
+                Logger.LogError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
                 messageManager.ShowError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
             }
         }
 
-        private void MainWindow_ChangeTextButtonClick(object sender, EventArgs e)
+        private void ChangeText(object sender, EventArgs e)
         {
             mainWindow.SourceText = mainWindow.TranslationText;
-            MainWindow_TranslateButtonClick(sender,e);
+            MainWindow_TranslateButtonClick(sender, e);
         }
 
         #endregion

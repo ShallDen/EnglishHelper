@@ -51,6 +51,7 @@ namespace EnglishHelper.Core
         private void BuildUri()
         {
             mUri = string.Concat(mAddress, "key=", mKey, "&lang=", LanguageOrienation, "&text=", Text);
+            Logger.LogInfo("Using URI: " + mUri);
         }
 
         private string GetJsonString()
@@ -63,10 +64,11 @@ namespace EnglishHelper.Core
             try
             {
                 jsonString = wc.DownloadString(mUri);
+                Logger.LogInfo("Translation was sucessfully received.");
             }
             catch (WebException wex)
             {
-                //Log wex
+                Logger.LogError("Can't get string from server:" + wex.Message);
                 jsonString = null;
             }
 

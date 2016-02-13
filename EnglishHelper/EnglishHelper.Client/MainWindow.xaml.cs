@@ -87,6 +87,7 @@ namespace EnglishHelper.Client
 
         private void MainWindow_Closed(object sender, EventArgs e)
         {
+            Logger.LogInfo("Application was closed.");
             Environment.Exit(0);
         }
 

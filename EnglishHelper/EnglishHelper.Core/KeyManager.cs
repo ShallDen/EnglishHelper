@@ -32,6 +32,10 @@ namespace EnglishHelper.Core
         {
             Translator translator = new Translator { Key = Key };
             bool isValid = string.IsNullOrEmpty(translator.GetTranslatedString("Ping")) ? false : true;
+            if (isValid)
+                Logger.LogInfo("Key is valid");
+            else
+                Logger.LogError("Key is invalid");
             return isValid;
         }
 
@@ -47,6 +51,7 @@ namespace EnglishHelper.Core
             else
             {
                 SerializationHelper.Serialize(userKeyLocation, this);
+                Logger.LogInfo(userKeyLocation + "file was created.");
                 return CheckKeyFileExists();
             }
         }
@@ -54,11 +59,14 @@ namespace EnglishHelper.Core
         public void SaveKey()
         {
             SerializationHelper.Serialize(userKeyLocation, this);
+            Logger.LogInfo("Key was saved.");
         }
 
         public void LoadKeyFromFile()
         {
+            Logger.LogInfo("Loading key from file...");
             Key = LoadKey();
+            Logger.LogInfo("Using key: " + Key);
         }
         public static string LoadKey()
         {

@@ -3,7 +3,6 @@ using System.Windows;
 using EnglishHelper.Core;
 using System.Diagnostics;
 using System.Windows.Navigation;
-using System.Configuration;
 
 namespace EnglishHelper.Client
 {
@@ -15,9 +14,11 @@ namespace EnglishHelper.Client
         private readonly IKeyWindow keyWindow;
         private readonly IKeyManager keyManager;
         private readonly IDictionaryManager dictionaryManager;
+        private readonly IDictionaryWindow dictionaryWindow;
 
         public MainPresenter(IMainWindow _mainWindow, ITranslator _translator, IMessageManager _messageManager,
-                             IKeyWindow _keyWindow, IKeyManager _keyManager, IDictionaryManager _dictionaryManager)
+                             IKeyWindow _keyWindow, IKeyManager _keyManager, IDictionaryManager _dictionaryManager,
+                             IDictionaryWindow _dictionaryWindow)
         {
             mainWindow = _mainWindow;
             translator = _translator;
@@ -25,19 +26,25 @@ namespace EnglishHelper.Client
             keyWindow = _keyWindow;
             keyManager = _keyManager;
             dictionaryManager = _dictionaryManager;
+            dictionaryWindow = _dictionaryWindow;
 
             mainWindow.ChangeLanguageButtonClick += MainWindow_ChangeLanguageButtonClick;
             mainWindow.TranslateButtonClick += MainWindow_TranslateButtonClick;
             mainWindow.AddToDictionaryButtonClick += MainWindow_AddToDictionaryButtonClick;
             mainWindow.ChangeTextButtonClick += MainWindow_ChangeTextButtonClick;
+            mainWindow.OpenDictionaryButtonClick += MainWindow_OpenDictionaryButtonClick;
             mainWindow.FormLoaded += MainWindow_FormLoaded;
             mainWindow.LanguageOrientation = "Language: English->Russian";
 
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
             keyWindow.WindowClosed += KeyWindow_WindowClosed;
-        }
 
+            dictionaryWindow.AddWordButtonClick += DictionaryWindow_AddWordButtonClick;
+            dictionaryWindow.DeleteWordButtonClick += DictionaryWindow_DeleteWordButtonClick;
+            dictionaryWindow.SaveDictionaryButtonClick += DictionaryWindow_SaveDictionaryButtonClick;
+
+        }
 
         #region Key Window event handlers
 
@@ -86,6 +93,12 @@ namespace EnglishHelper.Client
         {
             ChangeText(sender, e);
         }
+
+        private void MainWindow_OpenDictionaryButtonClick(object sender, EventArgs e)
+        {
+            OpenDictionary();
+        }
+
 
         #endregion
 
@@ -141,7 +154,7 @@ namespace EnglishHelper.Client
 
             if (string.IsNullOrEmpty(keyManager.Key))
             {
-                Logger.LogInfo("Key is null or empty. Opening Key window for getting new api key...");
+                Logger.LogInfo("Key is empty. Opening Key window for getting new api key...");
                 keyWindow.OpenWindow();
             }
             else if (keyManager.ValidateKey())
@@ -228,7 +241,33 @@ namespace EnglishHelper.Client
             mainWindow.SourceText = mainWindow.TranslationText;
             MainWindow_TranslateButtonClick(sender, e);
         }
-
         #endregion
+
+
+        private void DictionaryWindow_AddWordButtonClick(object sender, EventArgs e)
+        {
+
+        }
+        private void DictionaryWindow_DeleteWordButtonClick(object sender, EventArgs e)
+        {
+            var selectedRow = dictionaryWindow.SelectedRow;
+            dictionaryManager.DeleteWord(selectedRow.Word);
+            dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
+        }
+        private void DictionaryWindow_SaveDictionaryButtonClick(object sender, EventArgs e)
+        {
+            var temp = dictionaryManager.WordCount;
+            dictionaryManager.FillEmptyValues();
+
+            dictionaryManager.SaveDictionaryToFile();
+        }
+        private void OpenDictionary()
+        {
+            dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
+            dictionaryWindow.OpenWindow();
+        }
+
+       
+
     }
 }

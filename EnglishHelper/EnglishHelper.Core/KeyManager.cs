@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
 using System.Configuration;
@@ -24,19 +20,21 @@ namespace EnglishHelper.Core
     public class KeyManager : IKeyManager
     {
         private static string userKeyLocation = ConfigurationManager.AppSettings["KeyFileName"];
+        private Translator translator = new Translator();
 
         public string Key { get; set; }
+
         [XmlIgnore]
         public bool IsKeyValid { get; set; }
 
         public bool ValidateKey()
         {
-            Translator translator = new Translator { Key = Key };
+            translator.Key = Key;
             bool isValid = string.IsNullOrEmpty(translator.GetTranslatedString("Ping")) ? false : true;
             if (isValid)
-                Logger.LogInfo("Key is valid");
+                Logger.LogInfo("Key is valid.");
             else
-                Logger.LogError("Key is invalid");
+                Logger.LogError("Key is invalid.");
             return isValid;
         }
 

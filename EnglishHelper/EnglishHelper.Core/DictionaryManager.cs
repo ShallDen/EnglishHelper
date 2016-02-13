@@ -20,6 +20,7 @@ namespace EnglishHelper.Core
         bool CreateDictionaryFile();
         void SaveDictionaryToFile();
         void LoadDictionaryFromFile();
+        void FillEmptyValues();
     }
 
     [Serializable]
@@ -27,6 +28,7 @@ namespace EnglishHelper.Core
     {
         public string Word { get; set; }
         public string Translation { get; set; }
+        public string LastChangeDate { get; set; }
     }
 
     [Serializable]
@@ -35,17 +37,27 @@ namespace EnglishHelper.Core
     {
         private List<Entry> wordDictionary;
         private static string dictionaryLocation = ConfigurationManager.AppSettings["DictionaryFileName"];
+        private Translator translator = new Translator();
+
+        public event EventHandler DictionaryChanged;
 
         public List<Entry> WordDictionary
         {
             get { return wordDictionary; }
-            set { wordDictionary = value; }
+            set
+            {
+                wordDictionary = value;
+                if (DictionaryChanged != null)
+                    DictionaryChanged(this, EventArgs.Empty);
+            }
         }
 
         public DictionaryManager()
         {
             wordDictionary = new List<Entry>();
+            translator.Key = KeyManager.LoadKey();
         }
+
 
         public int WordCount { get { return wordDictionary.Count; } }
 
@@ -65,10 +77,9 @@ namespace EnglishHelper.Core
                 return false;      //throw new Exception("Dictionary has already contains " + word);
             else
             {
-                Translator translator = new Translator();
                 translator.Key = KeyManager.LoadKey();
                 string translation = translator.GetTranslatedString(word);
-                wordDictionary.Add(new Entry { Word = word, Translation = translation });
+                wordDictionary.Add(new Entry { Word = word, Translation = translation, LastChangeDate = DateTime.Now.ToString() });
                 SaveDictionaryToFile();
                 return true;
             }
@@ -118,6 +129,26 @@ namespace EnglishHelper.Core
         public void LoadDictionaryFromFile()
         {
             wordDictionary = (SerializationHelper.Deserialize(dictionaryLocation, typeof(DictionaryManager)) as DictionaryManager).wordDictionary;
+        }
+
+        public void FillEmptyValues()
+        {
+            var dictionary = wordDictionary;
+            foreach(var item in dictionary)
+            {
+                if (item.Word == null || item.Translation == null|| item.LastChangeDate == null)
+                {
+                    //Logger.LogWarning("Found empty value in item:" +);
+                    if(item.Translation == null)
+                    {
+                        item.Translation = translator.GetTranslatedString(item.Word);
+                    }
+                    if (item.LastChangeDate == null)
+                    {
+                        item.LastChangeDate = DateTime.Now.ToString();
+                    }
+                }
+            }
         }
     }
 }

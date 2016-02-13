@@ -1,0 +1,16 @@
+﻿<Window x:Class="EnglishHelper.Client.DictionaryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EnglishHelper.Client"
+        mc:Ignorable="d"
+        Title="Dictionary" Height="509.2" Width="402.4" FontFamily="Constantia" FontSize="13" MinHeight="509" MinWidth="402">
+    <Grid>
+        <DataGrid x:Name="wordGrid" Margin="23,21,19,69" FontSize="12" FontFamily="Comic Sans MS" RowHeight="20" RowHeaderWidth="0"/>
+        <Button x:Name="addWordButton" Content="Add new word" HorizontalAlignment="Left" Margin="23,0,0,14" Width="100" RenderTransformOrigin="0.389,0.018" FontFamily="Constantia" FontSize="13" Height="35" VerticalAlignment="Bottom" Background="{x:Null}"/>
+        <Button x:Name="deleteWordButton" Content="Delete word" HorizontalAlignment="Left" Margin="148,0,0,14" VerticalAlignment="Bottom" Width="100" FontFamily="Constantia" FontSize="13" Height="35" RenderTransformOrigin="0.827,0.603" Background="{x:Null}"/>
+        <Button x:Name="saveDictionaryButton" Content="Save" HorizontalAlignment="Left" Margin="274,0,0,14" VerticalAlignment="Bottom" Width="101" RenderTransformOrigin="0.784,0.773" Height="35" Background="{x:Null}"/>
+
+    </Grid>
+</Window>

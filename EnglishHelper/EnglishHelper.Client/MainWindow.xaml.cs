@@ -33,6 +33,7 @@ namespace EnglishHelper.Client
         event EventHandler ChangeLanguageButtonClick;
         event EventHandler AddToDictionaryButtonClick;
         event EventHandler ChangeTextButtonClick;
+        event EventHandler OpenDictionaryButtonClick;
         event RoutedEventHandler FormLoaded;
     }
 
@@ -46,12 +47,14 @@ namespace EnglishHelper.Client
             KeyWindow keyWindow = new KeyWindow();
             KeyManager keyManager = new KeyManager();
             DictionaryManager dictionaryManager = new DictionaryManager();
-            MainPresenter presenter = new MainPresenter(this, translator, messageManager, keyWindow, keyManager, dictionaryManager);
+            DictionaryWindow dictionaryWindow = new DictionaryWindow();
+            MainPresenter presenter = new MainPresenter(this, translator, messageManager, keyWindow, keyManager, dictionaryManager, dictionaryWindow);
 
             changeLanguageButton.Click += changeLanguageButton_Click;
             translateButton.Click += translaleButton_Click;
             addToDictionaryButton.Click += addToDictionaryButton_Click;
             changeTextButton.Click += changeTextButton_Click;
+            openDictionaryButton.Click += OpenDictionaryButton_Click;
             this.Loaded += MainWindow_Loaded;
             this.Closed += MainWindow_Closed;
         }
@@ -60,6 +63,7 @@ namespace EnglishHelper.Client
         public event EventHandler ChangeLanguageButtonClick;
         public event EventHandler AddToDictionaryButtonClick;
         public event EventHandler ChangeTextButtonClick;
+        public event EventHandler OpenDictionaryButtonClick;
         public event RoutedEventHandler FormLoaded;
 
         public string LanguageOrientation
@@ -115,6 +119,13 @@ namespace EnglishHelper.Client
             if (ChangeTextButtonClick != null)
                 ChangeTextButtonClick(this, EventArgs.Empty);
         }
+
+        private void OpenDictionaryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (OpenDictionaryButtonClick != null)
+                OpenDictionaryButtonClick(this, EventArgs.Empty);
+        }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (FormLoaded != null)

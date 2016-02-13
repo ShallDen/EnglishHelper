@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Net;
+using System.Configuration;
 
 namespace EnglishHelper.Core
 {
@@ -25,10 +22,9 @@ namespace EnglishHelper.Core
 
         public Translator()
         {
-            mAddress = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
+            mAddress = ConfigurationManager.AppSettings["TranslateAddress"];
             mLanguageOrienation = "en-ru";
             mText = string.Empty;
-            BuildUri();
         }
         public string LanguageOrienation
         {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
 using System.Configuration;
@@ -20,7 +18,7 @@ namespace EnglishHelper.Core
         bool CreateDictionaryFile();
         void SaveDictionaryToFile();
         void LoadDictionaryFromFile();
-        void FillEmptyValues();
+        void FillEmptyValuesInTable();
     }
 
     [Serializable]
@@ -87,9 +85,12 @@ namespace EnglishHelper.Core
 
         public void DeleteWord(string word)
         {
-            if (IsContainWord(word))
+            if (word != null)
             {
-                wordDictionary.Remove(wordDictionary.Where(c=>c.Word.ToLower() == word.ToLower()).First());
+                if (IsContainWord(word))
+                {
+                    wordDictionary.Remove(wordDictionary.Where(c => c.Word.ToLower() == word.ToLower()).First());
+                }
             }
         }
 
@@ -131,15 +132,18 @@ namespace EnglishHelper.Core
             wordDictionary = (SerializationHelper.Deserialize(dictionaryLocation, typeof(DictionaryManager)) as DictionaryManager).wordDictionary;
         }
 
-        public void FillEmptyValues()
+        public void FillEmptyValuesInTable()
         {
-            var dictionary = wordDictionary;
-            foreach(var item in dictionary)
+            foreach(var item in wordDictionary)
             {
                 if (item.Word == null || item.Translation == null|| item.LastChangeDate == null)
                 {
                     //Logger.LogWarning("Found empty value in item:" +);
-                    if(item.Translation == null)
+                    if (item.Word == null && item.Translation !=null)
+                        item.Word = item.Translation;
+                    if (item.Word == null || item.Translation == null && item.LastChangeDate != null)
+                        item.Word = item.Translation = "Autofixed value";
+                    if (item.Translation == null && item.Word!=null)
                     {
                         item.Translation = translator.GetTranslatedString(item.Word);
                     }
@@ -149,6 +153,22 @@ namespace EnglishHelper.Core
                     }
                 }
             }
+        }
+        public void FillEmptyValuesInRow(Entry row)
+        {
+            if (row.Word == null || row.Translation == null || row.LastChangeDate == null)
+            {
+                //Logger.LogWarning("Found empty value in item:" +);
+                if (row.Translation == null)
+                {
+                    row.Translation = translator.GetTranslatedString(row.Word);
+                }
+                if (row.LastChangeDate == null)
+                {
+                    row.LastChangeDate = DateTime.Now.ToString();
+                }
+            }
+
         }
     }
 }

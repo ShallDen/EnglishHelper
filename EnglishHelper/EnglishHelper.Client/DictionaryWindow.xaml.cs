@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using EnglishHelper.Core;
+using System.Collections;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace EnglishHelper.Client
 {
@@ -21,11 +25,11 @@ namespace EnglishHelper.Client
     /// 
     public interface IDictionaryWindow
     {
-        List<Entry> WordDictionary { get; set; }
-        Entry SelectedRow { get; }
+        IList SelectedRows { get; }
         void OpenWindow();
         void CloseWindow();
         void RefreshGrid();
+        void SetDictionary(List<Entry> list);
         event EventHandler AddWordButtonClick;
         event EventHandler DeleteWordButtonClick;
         event EventHandler SaveDictionaryButtonClick;
@@ -33,6 +37,7 @@ namespace EnglishHelper.Client
 
     public partial class DictionaryWindow : Window, IDictionaryWindow
     {
+        private List<Entry> wordDictionary;
         public DictionaryWindow()
         {
             InitializeComponent();
@@ -40,22 +45,15 @@ namespace EnglishHelper.Client
             addWordButton.Click += AddWordButton_Click;
             deleteWordButton.Click += DeleteWordButton_Click;
             saveDictionaryButton.Click += SaveDictionaryButton_Click;
-
-            wordGrid.ItemsSource = WordDictionary;
         }
 
         public event EventHandler AddWordButtonClick;
         public event EventHandler DeleteWordButtonClick;
         public event EventHandler SaveDictionaryButtonClick;
 
-        public List<Entry> WordDictionary
+        public IList SelectedRows
         {
-            get { return wordGrid.ItemsSource as List<Entry>; }
-            set { wordGrid.ItemsSource = value; }
-        }
-        public Entry SelectedRow
-        {
-            get { return wordGrid.SelectedItem as Entry; }
+            get { return wordGrid.SelectedItems; }
         }
 
         private void AddWordButton_Click(object sender, RoutedEventArgs e)
@@ -88,6 +86,32 @@ namespace EnglishHelper.Client
         public void RefreshGrid()
         {
             wordGrid.Items.Refresh();
+        }
+
+        private void wordGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            //var row = wordGrid.SelectedItem as Entry;
+            //if (row.Word == null || row.Translation == null || row.LastChangeDate == null)
+            //{
+            //    //Logger.LogWarning("Found empty value in item:" +);
+            //    Translator translator = new Translator();
+            //    translator.Key = KeyManager.LoadKey();
+            //    if (row.Translation == null)
+            //    {
+            //        row.Translation = translator.GetTranslatedString(row.Word);
+            //    }
+            //    if (row.LastChangeDate == null)
+            //    {
+            //        row.LastChangeDate = DateTime.Now.ToString();
+            //    }
+            //}
+            //RefreshGrid();
+        }
+
+        public void SetDictionary(List<Entry> list)
+        {
+            wordDictionary = list;
+            wordGrid.ItemsSource = wordDictionary;
         }
     }
 }

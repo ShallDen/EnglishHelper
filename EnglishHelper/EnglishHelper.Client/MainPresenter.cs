@@ -14,11 +14,10 @@ namespace EnglishHelper.Client
         private readonly IKeyWindow keyWindow;
         private readonly IKeyManager keyManager;
         private readonly IDictionaryManager dictionaryManager;
-        private readonly IDictionaryWindow dictionaryWindow;
+        private IDictionaryWindow dictionaryWindow;
 
         public MainPresenter(IMainWindow _mainWindow, ITranslator _translator, IMessageManager _messageManager,
-                             IKeyWindow _keyWindow, IKeyManager _keyManager, IDictionaryManager _dictionaryManager,
-                             IDictionaryWindow _dictionaryWindow)
+                             IKeyWindow _keyWindow, IKeyManager _keyManager, IDictionaryManager _dictionaryManager)
         {
             mainWindow = _mainWindow;
             translator = _translator;
@@ -26,7 +25,6 @@ namespace EnglishHelper.Client
             keyWindow = _keyWindow;
             keyManager = _keyManager;
             dictionaryManager = _dictionaryManager;
-            dictionaryWindow = _dictionaryWindow;
 
             mainWindow.ChangeLanguageButtonClick += MainWindow_ChangeLanguageButtonClick;
             mainWindow.TranslateButtonClick += MainWindow_TranslateButtonClick;
@@ -39,11 +37,6 @@ namespace EnglishHelper.Client
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
             keyWindow.WindowClosed += KeyWindow_WindowClosed;
-
-            dictionaryWindow.AddWordButtonClick += DictionaryWindow_AddWordButtonClick;
-            dictionaryWindow.DeleteWordButtonClick += DictionaryWindow_DeleteWordButtonClick;
-            dictionaryWindow.SaveDictionaryButtonClick += DictionaryWindow_SaveDictionaryButtonClick;
-
         }
 
         #region Key Window event handlers
@@ -250,20 +243,38 @@ namespace EnglishHelper.Client
         }
         private void DictionaryWindow_DeleteWordButtonClick(object sender, EventArgs e)
         {
-            var selectedRow = dictionaryWindow.SelectedRow;
-            dictionaryManager.DeleteWord(selectedRow.Word);
-            dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
+            var selectedRows = dictionaryWindow.SelectedRows;
+            if(selectedRows!=null)
+            {
+                foreach (var selectedRow in selectedRows)
+                {
+                    var row = selectedRow as Entry;
+                    if(row!=null)
+                        dictionaryManager.DeleteWord(row.Word);
+                }
+
+                dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
+            }
         }
+
         private void DictionaryWindow_SaveDictionaryButtonClick(object sender, EventArgs e)
         {
             var temp = dictionaryManager.WordCount;
-            dictionaryManager.FillEmptyValues();
+            dictionaryManager.FillEmptyValuesInTable();
 
             dictionaryManager.SaveDictionaryToFile();
         }
+
         private void OpenDictionary()
         {
-            dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
+            dictionaryWindow = new DictionaryWindow();
+
+            dictionaryWindow.AddWordButtonClick += DictionaryWindow_AddWordButtonClick;
+            dictionaryWindow.DeleteWordButtonClick += DictionaryWindow_DeleteWordButtonClick;
+            dictionaryWindow.SaveDictionaryButtonClick += DictionaryWindow_SaveDictionaryButtonClick;
+
+            dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
+           // dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
             dictionaryWindow.OpenWindow();
         }
 

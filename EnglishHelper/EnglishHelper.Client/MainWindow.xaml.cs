@@ -47,8 +47,7 @@ namespace EnglishHelper.Client
             KeyWindow keyWindow = new KeyWindow();
             KeyManager keyManager = new KeyManager();
             DictionaryManager dictionaryManager = new DictionaryManager();
-            DictionaryWindow dictionaryWindow = new DictionaryWindow();
-            MainPresenter presenter = new MainPresenter(this, translator, messageManager, keyWindow, keyManager, dictionaryManager, dictionaryWindow);
+            MainPresenter presenter = new MainPresenter(this, translator, messageManager, keyWindow, keyManager, dictionaryManager);
 
             changeLanguageButton.Click += changeLanguageButton_Click;
             translateButton.Click += translaleButton_Click;

@@ -139,18 +139,17 @@ namespace EnglishHelper.Core
                 if (item.Word == null || item.Translation == null|| item.LastChangeDate == null)
                 {
                     //Logger.LogWarning("Found empty value in item:" +);
-                    if (item.Word == null && item.Translation !=null)
+                    if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
                         item.Word = item.Translation;
-                    if (item.Word == null || item.Translation == null && item.LastChangeDate != null)
-                        item.Word = item.Translation = "Autofixed value";
-                    if (item.Translation == null && item.Word!=null)
-                    {
+
+                    if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
                         item.Translation = translator.GetTranslatedString(item.Word);
-                    }
-                    if (item.LastChangeDate == null)
-                    {
+
+                    if (string.IsNullOrWhiteSpace(item.LastChangeDate))
                         item.LastChangeDate = DateTime.Now.ToString();
-                    }
+
+                    if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
+                        item.Word = item.Translation = "Autofixed value";
                 }
             }
         }

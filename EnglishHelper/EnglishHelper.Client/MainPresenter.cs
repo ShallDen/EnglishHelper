@@ -253,6 +253,7 @@ namespace EnglishHelper.Client
                         dictionaryManager.DeleteWord(row.Word);
                 }
 
+                //dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
                 dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
             }
         }
@@ -277,8 +278,6 @@ namespace EnglishHelper.Client
            // dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
             dictionaryWindow.OpenWindow();
         }
-
-       
 
     }
 }

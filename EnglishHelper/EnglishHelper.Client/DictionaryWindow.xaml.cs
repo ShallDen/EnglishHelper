@@ -58,8 +58,8 @@ namespace EnglishHelper.Client
 
         private void AddWordButton_Click(object sender, RoutedEventArgs e)
         {
-            if (AddWordButtonClick != null)
-                AddWordButtonClick(this, e);
+             if (AddWordButtonClick != null)
+                  AddWordButtonClick(this, e);
         }
         private void DeleteWordButton_Click(object sender, RoutedEventArgs e)
         {
@@ -86,32 +86,40 @@ namespace EnglishHelper.Client
         public void RefreshGrid()
         {
             wordGrid.Items.Refresh();
+            
         }
 
         private void wordGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
-            //var row = wordGrid.SelectedItem as Entry;
-            //if (row.Word == null || row.Translation == null || row.LastChangeDate == null)
-            //{
-            //    //Logger.LogWarning("Found empty value in item:" +);
-            //    Translator translator = new Translator();
-            //    translator.Key = KeyManager.LoadKey();
-            //    if (row.Translation == null)
-            //    {
-            //        row.Translation = translator.GetTranslatedString(row.Word);
-            //    }
-            //    if (row.LastChangeDate == null)
-            //    {
-            //        row.LastChangeDate = DateTime.Now.ToString();
-            //    }
-            //}
-            //RefreshGrid();
+            var item = ((sender as DataGrid).SelectedItem) as Entry;
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                Translator translator = new Translator();
+                translator.Key = KeyManager.LoadKey();
+
+                if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
+                    item.Word = item.Translation;
+
+                if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
+                    item.Translation = translator.GetTranslatedString(item.Word);
+
+                if (string.IsNullOrWhiteSpace(item.LastChangeDate))
+                    item.LastChangeDate = DateTime.Now.ToString();
+
+                if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
+                    item.Word = item.Translation = "Autofixed value";
+            }
         }
 
         public void SetDictionary(List<Entry> list)
         {
             wordDictionary = list;
             wordGrid.ItemsSource = wordDictionary;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshGrid();
         }
     }
 }

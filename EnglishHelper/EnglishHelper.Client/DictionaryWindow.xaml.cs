@@ -94,14 +94,11 @@ namespace EnglishHelper.Client
             var item = ((sender as DataGrid).SelectedItem) as Entry;
             if (e.EditAction == DataGridEditAction.Commit)
             {
-                Translator translator = new Translator();
-                translator.Key = KeyManager.LoadKey();
-
                 if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
                     item.Word = item.Translation;
 
                 if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
-                    item.Translation = translator.GetTranslatedString(item.Word);
+                    item.Translation = Translator.Instance.GetTranslatedString(item.Word);
 
                 if (string.IsNullOrWhiteSpace(item.LastChangeDate))
                     item.LastChangeDate = DateTime.Now.ToString();

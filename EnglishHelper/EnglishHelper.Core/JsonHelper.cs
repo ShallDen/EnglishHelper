@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using LitJson;
 
 namespace EnglishHelper.Core
 {
-    class JsonObject
+    sealed class JsonObject
     {
         public int code = 0;
         public string language = string.Empty;
         public List<string> text = new List<string>();
     }
 
-    public class JsonHelper
+    public static class JsonHelper
     {
         public static string Parse(string jsonString)
         {

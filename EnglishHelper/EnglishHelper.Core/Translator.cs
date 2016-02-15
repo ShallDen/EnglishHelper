@@ -8,28 +8,34 @@ namespace EnglishHelper.Core
     {
         string LanguageOrienation { get; set; }
         string Text { get; set; }
-        string Key { get; set; }
         string GetTranslatedString(string word);
     }
 
     public class Translator : ITranslator
     {
-        private string mUri = string.Empty;
-        private string mAddress = string.Empty;
-        private string mKey = string.Empty;
-        private string mLanguageOrienation = string.Empty;
-        private string mText = string.Empty;
+        private static string mUri = string.Empty;
+        private static string mAddress = ConfigurationManager.AppSettings["TranslateAddress"];
+        private static string mLanguageOrienation = "en-ru";
+        private static string mText = string.Empty;
 
-        public Translator()
+        private static Translator instance;
+
+        protected Translator() { }
+
+        public static Translator Instance
         {
-            mAddress = ConfigurationManager.AppSettings["TranslateAddress"];
-            mLanguageOrienation = "en-ru";
-            mText = string.Empty;
+            get { return instance ?? (instance = new Translator()); }
         }
+
         public string LanguageOrienation
         {
             get { return mLanguageOrienation; }
             set { mLanguageOrienation = value; }
+        }
+
+        private string Key
+        {
+            get { return KeyManager.Instance.Key; }
         }
 
         public string Text
@@ -38,15 +44,9 @@ namespace EnglishHelper.Core
             set { mText = value; }
         }
 
-        public string Key
-        {
-            get { return mKey; }
-            set { mKey = value; }
-        }
-
         private void BuildUri()
         {
-            mUri = string.Concat(mAddress, "key=", mKey, "&lang=", LanguageOrienation, "&text=", Text);
+            mUri = string.Concat(mAddress, "key=", Key, "&lang=", LanguageOrienation, "&text=", Text);
             Logger.LogInfo("Using URI: " + mUri);
         }
 

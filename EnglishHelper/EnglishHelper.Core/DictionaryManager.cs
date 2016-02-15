@@ -35,7 +35,6 @@ namespace EnglishHelper.Core
     {
         private List<Entry> wordDictionary;
         private static string dictionaryLocation = ConfigurationManager.AppSettings["DictionaryFileName"];
-        private Translator translator = new Translator();
 
         public event EventHandler DictionaryChanged;
 
@@ -53,10 +52,8 @@ namespace EnglishHelper.Core
         public DictionaryManager()
         {
             wordDictionary = new List<Entry>();
-            translator.Key = KeyManager.LoadKey();
         }
-
-
+       
         public int WordCount { get { return wordDictionary.Count; } }
 
         public bool IsContainWord(string word)
@@ -75,8 +72,7 @@ namespace EnglishHelper.Core
                 return false;      //throw new Exception("Dictionary has already contains " + word);
             else
             {
-                translator.Key = KeyManager.LoadKey();
-                string translation = translator.GetTranslatedString(word);
+                string translation = Translator.Instance.GetTranslatedString(word);
                 wordDictionary.Add(new Entry { Word = word, Translation = translation, LastChangeDate = DateTime.Now.ToString() });
                 SaveDictionaryToFile();
                 return true;
@@ -143,7 +139,7 @@ namespace EnglishHelper.Core
                         item.Word = item.Translation;
 
                     if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
-                        item.Translation = translator.GetTranslatedString(item.Word);
+                        item.Translation = Translator.Instance.GetTranslatedString(item.Word);
 
                     if (string.IsNullOrWhiteSpace(item.LastChangeDate))
                         item.LastChangeDate = DateTime.Now.ToString();
@@ -160,7 +156,7 @@ namespace EnglishHelper.Core
                 //Logger.LogWarning("Found empty value in item:" +);
                 if (row.Translation == null)
                 {
-                    row.Translation = translator.GetTranslatedString(row.Word);
+                    row.Translation = Translator.Instance.GetTranslatedString(row.Word);
                 }
                 if (row.LastChangeDate == null)
                 {

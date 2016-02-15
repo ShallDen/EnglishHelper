@@ -2,17 +2,18 @@
 using System.Xml.Serialization;
 using System.IO;
 using System.Configuration;
+using System.Text;
 
 namespace EnglishHelper.Core
 {
     public interface IKeyManager
     {
-        bool IsKeyValid { get; set; }
+        bool IsKeyValid { get; }
         string Key { get; set; }
         bool CreateKeyFile();
         void LoadKeyFromFile();
         void SaveKey();
-        bool ValidateKey();
+        bool ValidateKey(string key);
     }
 
     [Serializable]
@@ -20,21 +21,52 @@ namespace EnglishHelper.Core
     public class KeyManager : IKeyManager
     {
         private static string userKeyLocation = ConfigurationManager.AppSettings["KeyFileName"];
-        private Translator translator = new Translator();
+        private string mKey = string.Empty;
+        private bool mIsKeyValid = false;
 
-        public string Key { get; set; }
+        private static KeyManager instance;
+        protected KeyManager() { }
+
+        public static KeyManager Instance
+        {
+            get { return instance ?? (instance = new KeyManager()); }
+        }
+
+        public string Key
+        {
+            get { return mKey; }
+            set { mKey = value; }
+        }
 
         [XmlIgnore]
-        public bool IsKeyValid { get; set; }
-
+        public bool IsKeyValid
+        {
+            get { return mIsKeyValid; }
+            private set { mIsKeyValid = value; }
+        }
+        
         public bool ValidateKey()
         {
-            translator.Key = Key;
-            bool isValid = string.IsNullOrEmpty(translator.GetTranslatedString("Ping")) ? false : true;
+            return ValidateKey(mKey);
+        }
+
+        public bool ValidateKey(string key)
+        {
+            mKey = key;
+
+            bool isValid = string.IsNullOrEmpty(Translator.Instance.GetTranslatedString("Ping")) ? false : true;
             if (isValid)
+            {
+                mIsKeyValid = true;
                 Logger.LogInfo("Key is valid.");
+            }
             else
+            {
+                mIsKeyValid = false;
+                mKey = string.Empty;
                 Logger.LogError("Key is invalid.");
+            }
+
             return isValid;
         }
 
@@ -46,12 +78,14 @@ namespace EnglishHelper.Core
         public bool CreateKeyFile()
         {
             if (CheckKeyFileExists())
+            {
+                Logger.LogInfo(userKeyLocation + " already exists.");
                 return true;
+            }
             else
             {
-                SerializationHelper.Serialize(userKeyLocation, this);
-                Logger.LogInfo(userKeyLocation + "file was created.");
-                return CheckKeyFileExists();
+                File.WriteAllText(userKeyLocation, string.Empty, Encoding.Unicode);
+                return false;
             }
         }
 
@@ -64,13 +98,21 @@ namespace EnglishHelper.Core
         public void LoadKeyFromFile()
         {
             Logger.LogInfo("Loading key from file...");
-            Key = LoadKey();
-            Logger.LogInfo("Using key: " + Key);
-        }
-        public static string LoadKey()
-        {
-            string key = (SerializationHelper.Deserialize(userKeyLocation, typeof(KeyManager)) as KeyManager).Key;
-            return key ?? string.Empty;
+            string key = string.Empty;
+
+            try
+            {
+                key = (SerializationHelper.Deserialize(userKeyLocation, typeof(KeyManager)) as KeyManager).Key;
+            }
+            catch (Exception)
+            {
+                key = key ?? string.Empty;
+            } 
+            finally
+            {
+                Logger.LogInfo("Using key: " + key);
+                mKey = key;
+            }
         }
     }
 }

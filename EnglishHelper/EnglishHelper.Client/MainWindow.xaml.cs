@@ -42,12 +42,10 @@ namespace EnglishHelper.Client
         public MainWindow()
         {
             InitializeComponent();
-            Translator translator = new Translator();
-            MessageManager messageManager = new MessageManager();
+
             KeyWindow keyWindow = new KeyWindow();
-            KeyManager keyManager = new KeyManager();
             DictionaryManager dictionaryManager = new DictionaryManager();
-            MainPresenter presenter = new MainPresenter(this, translator, messageManager, keyWindow, keyManager, dictionaryManager);
+            MainPresenter presenter = new MainPresenter(this, keyWindow, dictionaryManager);
 
             changeLanguageButton.Click += changeLanguageButton_Click;
             translateButton.Click += translaleButton_Click;

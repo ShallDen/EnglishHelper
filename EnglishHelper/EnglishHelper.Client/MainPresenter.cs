@@ -8,22 +8,15 @@ namespace EnglishHelper.Client
 {
     public class MainPresenter
     {
-        private readonly ITranslator translator;
         private readonly IMainWindow mainWindow;
-        private readonly IMessageManager messageManager;
         private readonly IKeyWindow keyWindow;
-        private readonly IKeyManager keyManager;
         private readonly IDictionaryManager dictionaryManager;
         private IDictionaryWindow dictionaryWindow;
 
-        public MainPresenter(IMainWindow _mainWindow, ITranslator _translator, IMessageManager _messageManager,
-                             IKeyWindow _keyWindow, IKeyManager _keyManager, IDictionaryManager _dictionaryManager)
+        public MainPresenter(IMainWindow _mainWindow, IKeyWindow _keyWindow, IDictionaryManager _dictionaryManager)
         {
             mainWindow = _mainWindow;
-            translator = _translator;
-            messageManager = _messageManager;
             keyWindow = _keyWindow;
-            keyManager = _keyManager;
             dictionaryManager = _dictionaryManager;
 
             mainWindow.ChangeLanguageButtonClick += MainWindow_ChangeLanguageButtonClick;
@@ -53,7 +46,7 @@ namespace EnglishHelper.Client
 
         private void KeyWindow_WindowClosed(object sender, EventArgs e)
         {
-            if (!keyManager.IsKeyValid)
+            if (!KeyManager.Instance.IsKeyValid)
                 mainWindow.CloseWindow();
         }
 
@@ -99,28 +92,24 @@ namespace EnglishHelper.Client
 
         private void ApplyKey()
         {
-            keyManager.Key = keyWindow.Key.Replace("\r\n", "").Replace(" ", "");
+            string key = keyWindow.Key.Replace("\r\n", "").Replace(" ", "");
 
-            if (string.IsNullOrEmpty(keyManager.Key))
+            if (string.IsNullOrEmpty(key))
             {
                 Logger.LogWarning("Key is null or empty. Try to enter anothe key.");
                 keyWindow.Key = string.Empty;
                 return;
             }
 
-            if (keyManager.ValidateKey())
+            if (KeyManager.Instance.ValidateKey(key))
             {
-                translator.Key = keyManager.Key;
-                keyManager.IsKeyValid = true;
-
-                keyManager.SaveKey();
+                KeyManager.Instance.SaveKey();
                 keyWindow.CloseWindow();
             }
             else
             {
-                messageManager.ShowError("Key isn't valid");
-                keyManager.Key = keyWindow.Key = string.Empty;
-                keyManager.IsKeyValid = false;
+                MessageManager.ShowError("Key isn't valid");
+                keyWindow.Key = string.Empty;
             }
         }
 
@@ -134,7 +123,7 @@ namespace EnglishHelper.Client
         {
             Logger.LogInfo("Initialing key...");
 
-            bool isFileExist = keyManager.CreateKeyFile();
+            bool isFileExist = KeyManager.Instance.CreateKeyFile();
 
             if (!isFileExist)
             {
@@ -143,25 +132,22 @@ namespace EnglishHelper.Client
                 return;
             }
 
-            keyManager.LoadKeyFromFile();
+            KeyManager.Instance.LoadKeyFromFile();
 
-            if (string.IsNullOrEmpty(keyManager.Key))
+            if (string.IsNullOrEmpty(KeyManager.Instance.Key))
             {
                 Logger.LogInfo("Key is empty. Opening Key window for getting new api key...");
                 keyWindow.OpenWindow();
             }
-            else if (keyManager.ValidateKey())
+            else if (KeyManager.Instance.ValidateKey())
             {
-                translator.Key = keyManager.Key;
-                keyManager.IsKeyValid = true;
                 Logger.LogInfo("Key was successfully validated.");
                 Logger.LogInfo("Key was initialized.");
             }
             else
             {
-                messageManager.ShowError("Key isn't valid");
-                keyManager.Key = keyWindow.Key = string.Empty;
-                keyManager.IsKeyValid = false;
+                MessageManager.ShowError("Key isn't valid");
+                keyWindow.Key = string.Empty;
                 Logger.LogError("Key isn't valid");
 
                 keyWindow.OpenWindow();
@@ -187,18 +173,18 @@ namespace EnglishHelper.Client
 
         private void ChangeTranslationOrientation()
         {
-            if (translator.LanguageOrienation == "en-ru")
+            if (Translator.Instance.LanguageOrienation == "en-ru")
             {
-                translator.LanguageOrienation = "ru-en";
+                Translator.Instance.LanguageOrienation = "ru-en";
                 mainWindow.LanguageOrientation = "Language: Russian->English";
-                Logger.LogInfo("Changing translate orientation to " + translator.LanguageOrienation);
+                Logger.LogInfo("Changing translate orientation to " + Translator.Instance.LanguageOrienation);
                 return;
             }
-            if (translator.LanguageOrienation == "ru-en")
+            if (Translator.Instance.LanguageOrienation == "ru-en")
             {
-                translator.LanguageOrienation = "en-ru";
+                Translator.Instance.LanguageOrienation = "en-ru";
                 mainWindow.LanguageOrientation = "Language: English->Russian";
-                Logger.LogInfo("Changing translate orientation to " + translator.LanguageOrienation);
+                Logger.LogInfo("Changing translate orientation to " + Translator.Instance.LanguageOrienation);
                 return;
             }
         }
@@ -207,7 +193,7 @@ namespace EnglishHelper.Client
         {
             if (!string.IsNullOrWhiteSpace(mainWindow.SourceText))
             {
-                string translatedString = translator.GetTranslatedString(mainWindow.SourceText);
+                string translatedString = Translator.Instance.GetTranslatedString(mainWindow.SourceText);
                 if (!string.IsNullOrEmpty(translatedString))
                     mainWindow.TranslationText = translatedString;
             }
@@ -220,12 +206,12 @@ namespace EnglishHelper.Client
             if (isAdded)
             {
                 Logger.LogInfo("Word '" + mainWindow.SourceText + "' was added to dictionary.");
-                messageManager.ShowMessage("Word '" + mainWindow.SourceText + "' was added to dictionary.");
+                MessageManager.ShowMessage("Word '" + mainWindow.SourceText + "' was added to dictionary.");
             }
             else
             {
                 Logger.LogError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
-                messageManager.ShowError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
+                MessageManager.ShowError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
             }
         }
 

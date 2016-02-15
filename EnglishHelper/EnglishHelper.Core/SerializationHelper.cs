@@ -8,7 +8,7 @@ using System.IO;
 
 namespace EnglishHelper.Core
 {
-    public class SerializationHelper
+    public static class SerializationHelper
     {
         public static void Serialize(string filename, Object obj)
         {

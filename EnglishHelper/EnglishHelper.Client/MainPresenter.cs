@@ -46,7 +46,7 @@ namespace EnglishHelper.Client
 
         private void KeyWindow_WindowClosed(object sender, EventArgs e)
         {
-            if (!KeyManager.Instance.IsKeyValid)
+            if (!KeyManager.Instance.IsKeyValid) // change it to click own close button 
                 mainWindow.CloseWindow();
         }
 
@@ -156,19 +156,7 @@ namespace EnglishHelper.Client
 
         private void InitializeDictionary()
         {
-            Logger.LogInfo("Initialing existing dictionary...");
-
-            bool isFileExist = dictionaryManager.CreateDictionaryFile();
-
-            dictionaryManager.LoadDictionaryFromFile();
-
-            if (dictionaryManager.WordDictionary == null)
-            {
-                Logger.LogError("Dictionary isn't valid");
-                return;
-            }
-
-            Logger.LogInfo("Dictionary was initialized.");
+            dictionaryManager.InitializeDictionary();
         }
 
         private void ChangeTranslationOrientation()
@@ -239,17 +227,21 @@ namespace EnglishHelper.Client
                         dictionaryManager.DeleteWord(row.Word);
                 }
 
-                //dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
                 dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
+
+                Logger.LogInfo(selectedRows.Count + " word(s) deleted");
             }
         }
 
         private void DictionaryWindow_SaveDictionaryButtonClick(object sender, EventArgs e)
         {
-            var temp = dictionaryManager.WordCount;
+            var wordCount = dictionaryManager.WordCount;
             dictionaryManager.FillEmptyValuesInTable();
 
             dictionaryManager.SaveDictionaryToFile();
+
+            Logger.LogInfo(wordCount + " item(s) saved to dictionary");
+            MessageManager.ShowMessage(wordCount + " item(s) saved to dictionary");
         }
 
         private void OpenDictionary()
@@ -260,10 +252,9 @@ namespace EnglishHelper.Client
             dictionaryWindow.DeleteWordButtonClick += DictionaryWindow_DeleteWordButtonClick;
             dictionaryWindow.SaveDictionaryButtonClick += DictionaryWindow_SaveDictionaryButtonClick;
 
+            InitializeDictionary();
             dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
-           // dictionaryWindow.WordDictionary = dictionaryManager.WordDictionary;
             dictionaryWindow.OpenWindow();
         }
-
     }
 }

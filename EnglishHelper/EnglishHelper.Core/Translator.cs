@@ -17,6 +17,7 @@ namespace EnglishHelper.Core
         private static string mAddress = ConfigurationManager.AppSettings["TranslateAddress"];
         private static string mLanguageOrienation = "en-ru";
         private static string mText = string.Empty;
+        private static string mTranslation = string.Empty;
 
         private static Translator instance;
 
@@ -43,11 +44,15 @@ namespace EnglishHelper.Core
             get { return mText; }
             set { mText = value; }
         }
+        public string Translation
+        {
+            get { return mTranslation; }
+            set { mTranslation = value; }
+        }
 
         private void BuildUri()
         {
             mUri = string.Concat(mAddress, "key=", Key, "&lang=", LanguageOrienation, "&text=", Text);
-            Logger.LogInfo("Using URI: " + mUri);
         }
 
         private string GetJsonString()
@@ -59,7 +64,11 @@ namespace EnglishHelper.Core
 
             try
             {
+                Logger.LogInfo("Retrieving translation...");
+                Logger.LogInfo("Using URI: " + mUri);
+
                 jsonString = wc.DownloadString(mUri);
+
                 Logger.LogInfo("Translation was sucessfully received.");
             }
             catch (WebException wex)
@@ -73,7 +82,7 @@ namespace EnglishHelper.Core
 
         public string GetTranslatedString(string word)
         {
-            this.Text = word;
+            mText = word;
             string jsonString = string.Empty;
 
             BuildUri();
@@ -81,7 +90,10 @@ namespace EnglishHelper.Core
             if (string.IsNullOrEmpty(jsonString))
                 return null;
 
-            return JsonHelper.Parse(jsonString);
+            string translation = JsonHelper.Parse(jsonString);
+            mTranslation = translation;
+
+            return translation;
         }
     }
 }

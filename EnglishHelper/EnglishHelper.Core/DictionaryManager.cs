@@ -11,6 +11,7 @@ namespace EnglishHelper.Core
     {
         List<Entry> WordDictionary { get; set; }
         int WordCount { get; }
+        void InitializeDictionary();
         bool IsContainWord(string word);
         bool AddWord(string word);
         void DeleteWord(string word);
@@ -56,6 +57,23 @@ namespace EnglishHelper.Core
        
         public int WordCount { get { return wordDictionary.Count; } }
 
+        public void InitializeDictionary()
+        {
+            Logger.LogInfo("Initialing existing dictionary...");
+
+            bool isFileExist = CreateDictionaryFile();
+
+            LoadDictionaryFromFile();
+
+            if (WordDictionary == null)
+            {
+                Logger.LogError("Dictionary isn't valid");
+                return;
+            }
+
+            Logger.LogInfo("Dictionary was initialized.");
+        }
+
         public bool IsContainWord(string word)
         {
             bool isContains = false;
@@ -72,7 +90,7 @@ namespace EnglishHelper.Core
                 return false;      //throw new Exception("Dictionary has already contains " + word);
             else
             {
-                string translation = Translator.Instance.GetTranslatedString(word);
+                string translation = Translator.Instance.Text.ToLower() == word.ToLower() ? Translator.Instance.Translation : Translator.Instance.GetTranslatedString(word);
                 wordDictionary.Add(new Entry { Word = word, Translation = translation, LastChangeDate = DateTime.Now.ToString() });
                 SaveDictionaryToFile();
                 return true;

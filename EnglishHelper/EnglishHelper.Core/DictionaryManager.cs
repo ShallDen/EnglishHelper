@@ -137,13 +137,21 @@ namespace EnglishHelper.Core
         public bool AddWord(string word)
         {
             if (string.IsNullOrWhiteSpace(word))
+            {
+                Logger.LogWarning("Word is null or contains only spaces.");
                 return false;
+            }
             else if (IsContainWord(word))
-                return false;      //throw new Exception("Dictionary has already contains " + word);
+            {
+                Logger.LogWarning("Dictionary has already contains '" + word + "'.");
+                return false;
+            }
             else
             {
                 string translation = Translator.Instance.Text.ToLower() == word.ToLower() ? Translator.Instance.Translation : Translator.Instance.GetTranslatedString(word);
                 wordDictionary.Add(new Entry { Word = word, Translation = translation, LastChangeDate = DateTime.Now.ToString() });
+                Logger.LogInfo("Word '" + word + "' was added in dictionary");
+
                 return true;
             }
         }

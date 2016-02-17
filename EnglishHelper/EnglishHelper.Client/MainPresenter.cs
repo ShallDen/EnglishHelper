@@ -214,24 +214,27 @@ namespace EnglishHelper.Client
 
         private void DictionaryWindow_AddWordButtonClick(object sender, EventArgs e)
         {
-
+            dictionaryManager.AddWord("New");
+          //  wordDictionary.Add(new Entry { Word = "New", Translation = "Тест нового", LastChangeDate = "11111" });
 
         }
         private void DictionaryWindow_DeleteWordButtonClick(object sender, EventArgs e)
         {
             var selectedRows = dictionaryWindow.SelectedRows;
-            if(selectedRows!=null)
+            int rowCount = selectedRows.Count;
+
+            if (selectedRows!=null)
             {
-                foreach (var selectedRow in selectedRows)
+                while (selectedRows.Count > 0)
                 {
-                    var row = selectedRow as Entry;
-                    if(row!=null)
+                    var row = selectedRows[0] as Entry;
+                    Logger.LogInfo("Deleting '" + row.Word + "'");
+
+                    if (row != null)
                         dictionaryManager.DeleteWord(row.Word);
                 }
 
-        //        dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
-
-                Logger.LogInfo(selectedRows.Count + " word(s) deleted");
+                Logger.LogInfo(rowCount + " word(s) deleted");
             }
         }
 

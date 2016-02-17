@@ -28,7 +28,6 @@ namespace EnglishHelper.Client
         IList SelectedRows { get; }
         void OpenWindow();
         void CloseWindow();
-        void RefreshGrid();
         void SetDictionary(ObservableCollection<Entry> list);
         event EventHandler AddWordButtonClick;
         event EventHandler DeleteWordButtonClick;
@@ -56,40 +55,23 @@ namespace EnglishHelper.Client
             get { return wordGrid.SelectedItems; }
         }
 
+        #region Event throwing
         private void AddWordButton_Click(object sender, RoutedEventArgs e)
         {
-            wordDictionary.Add(new Entry { Word = "New", Translation = "Тест нового", LastChangeDate = "11111"});
-
-           //  if (AddWordButtonClick != null)
-           //       AddWordButtonClick(this, e);
+             if (AddWordButtonClick != null)
+                  AddWordButtonClick(this, e);
         }
         private void DeleteWordButton_Click(object sender, RoutedEventArgs e)
         {
             if (DeleteWordButtonClick != null)
                 DeleteWordButtonClick(this, e);
-         //   RefreshGrid();
         }
         private void SaveDictionaryButton_Click(object sender, RoutedEventArgs e)
         {
             if (SaveDictionaryButtonClick != null)
                 SaveDictionaryButtonClick(this, e);
-         //   RefreshGrid();
         }
-
-        public void OpenWindow()
-        {
-            this.ShowDialog();
-        }
-
-        public void CloseWindow()
-        {
-            this.Close();
-        }
-        public void RefreshGrid()
-        {
-            wordGrid.Items.Refresh();
-            
-        }
+        #endregion
 
         private void wordGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
@@ -111,15 +93,20 @@ namespace EnglishHelper.Client
             }
         }
 
+        public void OpenWindow()
+        {
+            this.ShowDialog();
+        }
+
+        public void CloseWindow()
+        {
+            this.Close();
+        }
+
         public void SetDictionary(ObservableCollection<Entry> list)
         {
             wordDictionary = list;
             wordGrid.DataContext = wordDictionary;
-        }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            RefreshGrid();
         }
     }
 }

@@ -18,7 +18,6 @@
         <Button x:Name="deleteWordButton" Content="Delete word" HorizontalAlignment="Left" Margin="155,0,0,15" VerticalAlignment="Bottom" Width="124" FontFamily="Constantia" FontSize="13" Height="35" RenderTransformOrigin="0.827,0.603" Background="{x:Null}"/>
         <Button x:Name="saveDictionaryButton" Content="Save" HorizontalAlignment="Left" Margin="289,0,0,15" VerticalAlignment="Bottom" Width="124" RenderTransformOrigin="0.784,0.773" Height="35" Background="{x:Null}"/>
         <Label x:Name="label" Content="Your dictionary:" HorizontalAlignment="Left" Margin="16,7,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="refreshGridButton" Content="Refresh grid" HorizontalAlignment="Left" Margin="312,7,0,0" VerticalAlignment="Top" Width="101" Click="button_Click" Height="24" Background="{x:Null}"/>
 
     </Grid>
 </Window>

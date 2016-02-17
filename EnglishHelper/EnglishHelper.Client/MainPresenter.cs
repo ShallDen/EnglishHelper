@@ -229,7 +229,7 @@ namespace EnglishHelper.Client
                         dictionaryManager.DeleteWord(row.Word);
                 }
 
-                dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
+        //        dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
 
                 Logger.LogInfo(selectedRows.Count + " word(s) deleted");
             }

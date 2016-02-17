@@ -29,7 +29,7 @@ namespace EnglishHelper.Client
         void OpenWindow();
         void CloseWindow();
         void RefreshGrid();
-        void SetDictionary(List<Entry> list);
+        void SetDictionary(ObservableCollection<Entry> list);
         event EventHandler AddWordButtonClick;
         event EventHandler DeleteWordButtonClick;
         event EventHandler SaveDictionaryButtonClick;
@@ -37,7 +37,7 @@ namespace EnglishHelper.Client
 
     public partial class DictionaryWindow : Window, IDictionaryWindow
     {
-        private List<Entry> wordDictionary;
+        ObservableCollection<Entry> wordDictionary = null;
         public DictionaryWindow()
         {
             InitializeComponent();
@@ -111,10 +111,10 @@ namespace EnglishHelper.Client
             }
         }
 
-        public void SetDictionary(List<Entry> list)
+        public void SetDictionary(ObservableCollection<Entry> list)
         {
             wordDictionary = list;
-            wordGrid.ItemsSource = wordDictionary;
+            wordGrid.DataContext = wordDictionary;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

@@ -6,12 +6,13 @@ using System.IO;
 using System.Configuration;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 
 namespace EnglishHelper.Core
 {
     public interface IDictionaryManager
     {
-        List<Entry> WordDictionary { get; set; }
+        ObservableCollection<Entry> WordDictionary { get; set; }
         int WordCount { get; }
         void InitializeDictionary();
         bool IsContainWord(string word);
@@ -85,12 +86,12 @@ namespace EnglishHelper.Core
     [XmlRootAttribute("DictionaryManager")]
     public class DictionaryManager: IDictionaryManager
     {
-        private List<Entry> wordDictionary;
+        private ObservableCollection<Entry> wordDictionary;
         private static string dictionaryLocation = ConfigurationManager.AppSettings["DictionaryFileName"];
 
         public event EventHandler DictionaryChanged;
 
-        public List<Entry> WordDictionary
+        public ObservableCollection<Entry> WordDictionary
         {
             get { return wordDictionary; }
             set
@@ -103,7 +104,7 @@ namespace EnglishHelper.Core
 
         public DictionaryManager()
         {
-            wordDictionary = new List<Entry>();
+            wordDictionary = new ObservableCollection<Entry>();
         }
        
         public int WordCount { get { return wordDictionary.Count; } }

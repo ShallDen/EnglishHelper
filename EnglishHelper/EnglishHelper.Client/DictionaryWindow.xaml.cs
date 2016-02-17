@@ -28,15 +28,15 @@ namespace EnglishHelper.Client
         IList SelectedRows { get; }
         void OpenWindow();
         void CloseWindow();
-        void SetDictionary(ObservableCollection<Entry> list);
+        void BindDictionaryWithGrid(ObservableCollection<Entry> list);
         event EventHandler AddWordButtonClick;
         event EventHandler DeleteWordButtonClick;
         event EventHandler SaveDictionaryButtonClick;
+        event EventHandler<DataGridRowEditEndingEventArgs> DictionaryChanged;
     }
 
     public partial class DictionaryWindow : Window, IDictionaryWindow
     {
-        ObservableCollection<Entry> wordDictionary = null;
         public DictionaryWindow()
         {
             InitializeComponent();
@@ -44,11 +44,13 @@ namespace EnglishHelper.Client
             addWordButton.Click += AddWordButton_Click;
             deleteWordButton.Click += DeleteWordButton_Click;
             saveDictionaryButton.Click += SaveDictionaryButton_Click;
+            wordGrid.RowEditEnding += WordGrid_RowEditEnding;
         }
 
         public event EventHandler AddWordButtonClick;
         public event EventHandler DeleteWordButtonClick;
         public event EventHandler SaveDictionaryButtonClick;
+        public event EventHandler<DataGridRowEditEndingEventArgs> DictionaryChanged;
 
         public IList SelectedRows
         {
@@ -73,24 +75,10 @@ namespace EnglishHelper.Client
         }
         #endregion
 
-        private void wordGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        private void WordGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
-            var item = ((sender as DataGrid).SelectedItem) as Entry;
-            if (e.EditAction == DataGridEditAction.Commit)
-            {
-                if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
-                    item.Word = item.Translation;
-
-                if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
-                    item.Translation = Translator.Instance.GetTranslatedString(item.Word);
-
-                if (string.IsNullOrWhiteSpace(item.LastChangeDate))
-                    item.LastChangeDate = DateTime.Now.ToString();
-
-                if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
-                    item.Word = item.Translation = "Autofixed value";
-
-            }
+            if (DictionaryChanged != null)
+                DictionaryChanged(sender, e);
         }
 
         public void OpenWindow()
@@ -103,10 +91,9 @@ namespace EnglishHelper.Client
             this.Close();
         }
 
-        public void SetDictionary(ObservableCollection<Entry> list)
+        public void BindDictionaryWithGrid(ObservableCollection<Entry> list)
         {
-            wordDictionary = list;
-            wordGrid.DataContext = wordDictionary;
+            wordGrid.DataContext = list;
         }
     }
 }

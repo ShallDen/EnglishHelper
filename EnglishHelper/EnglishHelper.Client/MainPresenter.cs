@@ -3,6 +3,7 @@ using System.Windows;
 using EnglishHelper.Core;
 using System.Diagnostics;
 using System.Windows.Navigation;
+using System.Windows.Controls;
 
 namespace EnglishHelper.Client
 {
@@ -209,12 +210,27 @@ namespace EnglishHelper.Client
             mainWindow.SourceText = mainWindow.TranslationText;
             MainWindow_TranslateButtonClick(sender, e);
         }
+
+        private void OpenDictionary()
+        {
+            dictionaryWindow = new DictionaryWindow();
+
+            dictionaryWindow.AddWordButtonClick += DictionaryWindow_AddWordButtonClick;
+            dictionaryWindow.DeleteWordButtonClick += DictionaryWindow_DeleteWordButtonClick;
+            dictionaryWindow.SaveDictionaryButtonClick += DictionaryWindow_SaveDictionaryButtonClick;
+            dictionaryWindow.DictionaryChanged += DictionaryWindow_DictionaryChanged;
+
+            InitializeDictionary();
+            dictionaryWindow.BindDictionaryWithGrid(dictionaryManager.WordDictionary);
+            dictionaryWindow.OpenWindow();
+        }
+
         #endregion
 
-
+        #region Dictionary window handlers
         private void DictionaryWindow_AddWordButtonClick(object sender, EventArgs e)
         {
-            dictionaryManager.AddWord("New");
+          //  dictionaryManager.AddWord("New");
           //  wordDictionary.Add(new Entry { Word = "New", Translation = "Тест нового", LastChangeDate = "11111" });
 
         }
@@ -249,17 +265,26 @@ namespace EnglishHelper.Client
             MessageManager.ShowMessage(wordCount + " item(s) saved to dictionary");
         }
 
-        private void OpenDictionary()
+
+        private void DictionaryWindow_DictionaryChanged(object sender, DataGridRowEditEndingEventArgs e)
         {
-            dictionaryWindow = new DictionaryWindow();
+            var item = ((sender as DataGrid).SelectedItem) as Entry;
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
+                    item.Word = item.Translation;
 
-            dictionaryWindow.AddWordButtonClick += DictionaryWindow_AddWordButtonClick;
-            dictionaryWindow.DeleteWordButtonClick += DictionaryWindow_DeleteWordButtonClick;
-            dictionaryWindow.SaveDictionaryButtonClick += DictionaryWindow_SaveDictionaryButtonClick;
+                if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
+                    item.Translation = Translator.Instance.GetTranslatedString(item.Word);
 
-            InitializeDictionary();
-            dictionaryWindow.SetDictionary(dictionaryManager.WordDictionary);
-            dictionaryWindow.OpenWindow();
+                if (string.IsNullOrWhiteSpace(item.LastChangeDate))
+                    item.LastChangeDate = DateTime.Now.ToString();
+
+                if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
+                    item.Word = item.Translation = "Autofixed value";
+
+            }
         }
+        #endregion
     }
 }

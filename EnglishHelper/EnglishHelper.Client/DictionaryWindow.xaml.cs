@@ -58,20 +58,22 @@ namespace EnglishHelper.Client
 
         private void AddWordButton_Click(object sender, RoutedEventArgs e)
         {
-             if (AddWordButtonClick != null)
-                  AddWordButtonClick(this, e);
+            wordDictionary.Add(new Entry { Word = "New", Translation = "Тест нового", LastChangeDate = "11111"});
+
+           //  if (AddWordButtonClick != null)
+           //       AddWordButtonClick(this, e);
         }
         private void DeleteWordButton_Click(object sender, RoutedEventArgs e)
         {
             if (DeleteWordButtonClick != null)
                 DeleteWordButtonClick(this, e);
-            RefreshGrid();
+         //   RefreshGrid();
         }
         private void SaveDictionaryButton_Click(object sender, RoutedEventArgs e)
         {
             if (SaveDictionaryButtonClick != null)
                 SaveDictionaryButtonClick(this, e);
-            RefreshGrid();
+         //   RefreshGrid();
         }
 
         public void OpenWindow()
@@ -105,6 +107,7 @@ namespace EnglishHelper.Client
 
                 if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
                     item.Word = item.Translation = "Autofixed value";
+
             }
         }
 

@@ -190,6 +190,7 @@ namespace EnglishHelper.Client
         private void AddToDictionary()
         {
             bool isAdded = dictionaryManager.AddWord(mainWindow.SourceText);
+            dictionaryManager.SaveDictionaryToFile();
 
             if (isAdded)
             {
@@ -213,6 +214,7 @@ namespace EnglishHelper.Client
 
         private void DictionaryWindow_AddWordButtonClick(object sender, EventArgs e)
         {
+
 
         }
         private void DictionaryWindow_DeleteWordButtonClick(object sender, EventArgs e)

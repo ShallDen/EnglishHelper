@@ -4,6 +4,8 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.IO;
 using System.Configuration;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace EnglishHelper.Core
 {
@@ -23,11 +25,60 @@ namespace EnglishHelper.Core
     }
 
     [Serializable]
-    public class Entry
+    public class Entry : INotifyPropertyChanged
     {
-        public string Word { get; set; }
-        public string Translation { get; set; }
-        public string LastChangeDate { get; set; }
+        private string mWord;
+        private string mTranslation;
+        private string mLastChangeDate;
+
+        public string Word
+        {
+            get { return mWord; }
+            set
+            {
+                if (value != mWord)
+                {
+                    this.mWord = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Translation
+        {
+            get { return mTranslation; }
+            set
+            {
+                if (value != mTranslation)
+                {
+                    this.mTranslation = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string LastChangeDate
+        {
+            get { return mLastChangeDate; }
+            set
+            {
+                if (value != mLastChangeDate)
+                {
+                    this.mLastChangeDate = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 
     [Serializable]
@@ -92,7 +143,6 @@ namespace EnglishHelper.Core
             {
                 string translation = Translator.Instance.Text.ToLower() == word.ToLower() ? Translator.Instance.Translation : Translator.Instance.GetTranslatedString(word);
                 wordDictionary.Add(new Entry { Word = word, Translation = translation, LastChangeDate = DateTime.Now.ToString() });
-                SaveDictionaryToFile();
                 return true;
             }
         }

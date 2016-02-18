@@ -16,13 +16,14 @@ namespace EnglishHelper.Core
         int WordCount { get; }
         void InitializeDictionary();
         bool IsContainWord(string word);
+        int GetCountByWord(string word);
         bool AddWord(string word);
         void DeleteWord(string word);
         string GetTranslation(string word);
         bool CreateDictionaryFile();
         void SaveDictionaryToFile();
         void LoadDictionaryFromFile();
-        void FillEmptyValuesInTable();
+        void FillEmptyValuesInRow(Entry item);
     }
 
     [Serializable]
@@ -134,6 +135,14 @@ namespace EnglishHelper.Core
             return isContains;
         }
 
+        public int GetCountByWord(string word)
+        {
+            int count = 0;
+            if (wordDictionary.Count > 0 && word != null)
+                count = wordDictionary.Where(c => c.Word.ToLower() == word.ToLower()).Count();
+            return count;
+        }
+
         public bool AddWord(string word)
         {
             if (string.IsNullOrWhiteSpace(word))
@@ -162,7 +171,7 @@ namespace EnglishHelper.Core
             {
                 if (IsContainWord(word))
                 {
-                    wordDictionary.Remove(wordDictionary.Where(c => c.Word.ToLower() == word.ToLower()).First());
+                    wordDictionary.Remove(wordDictionary.Where(c => c.Word.ToLower() == word.ToLower()).Last());
                 }
             }
         }
@@ -205,41 +214,19 @@ namespace EnglishHelper.Core
             wordDictionary = (SerializationHelper.Deserialize(dictionaryLocation, typeof(DictionaryManager)) as DictionaryManager).wordDictionary;
         }
 
-        public void FillEmptyValuesInTable()
+        public void FillEmptyValuesInRow(Entry item)
         {
-            foreach(var item in wordDictionary)
-            {
-                if (item.Word == null || item.Translation == null|| item.LastChangeDate == null)
-                {
-                    //Logger.LogWarning("Found empty value in item:" +);
-                    if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
-                        item.Word = item.Translation;
+            if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
+                item.Word = item.Translation;
 
-                    if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
-                        item.Translation = Translator.Instance.GetTranslatedString(item.Word);
+            if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
+                item.Translation = Translator.Instance.GetTranslatedString(item.Word);
 
-                    if (string.IsNullOrWhiteSpace(item.LastChangeDate))
-                        item.LastChangeDate = DateTime.Now.ToString();
+            if (string.IsNullOrWhiteSpace(item.LastChangeDate))
+                item.LastChangeDate = DateTime.Now.ToString();
 
-                    if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
-                        item.Word = item.Translation = "Autofixed value";
-                }
-            }
-        }
-        public void FillEmptyValuesInRow(Entry row)
-        {
-            if (row.Word == null || row.Translation == null || row.LastChangeDate == null)
-            {
-                //Logger.LogWarning("Found empty value in item:" +);
-                if (row.Translation == null)
-                {
-                    row.Translation = Translator.Instance.GetTranslatedString(row.Word);
-                }
-                if (row.LastChangeDate == null)
-                {
-                    row.LastChangeDate = DateTime.Now.ToString();
-                }
-            }
+            if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
+                item.Word = item.Translation = "Autofixed value";
 
         }
     }

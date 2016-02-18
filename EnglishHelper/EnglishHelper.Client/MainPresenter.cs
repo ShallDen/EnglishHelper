@@ -191,10 +191,11 @@ namespace EnglishHelper.Client
         private void AddToDictionary()
         {
             bool isAdded = dictionaryManager.AddWord(mainWindow.SourceText);
-            dictionaryManager.SaveDictionaryToFile();
 
             if (isAdded)
             {
+                dictionaryManager.SaveDictionaryToFile();
+
                 Logger.LogInfo("Word '" + mainWindow.SourceText + "' was added to dictionary.");
                 MessageManager.ShowMessage("Word '" + mainWindow.SourceText + "' was added to dictionary.");
             }
@@ -257,7 +258,6 @@ namespace EnglishHelper.Client
         private void DictionaryWindow_SaveDictionaryButtonClick(object sender, EventArgs e)
         {
             var wordCount = dictionaryManager.WordCount;
-            dictionaryManager.FillEmptyValuesInTable();
 
             dictionaryManager.SaveDictionaryToFile();
 
@@ -269,20 +269,26 @@ namespace EnglishHelper.Client
         private void DictionaryWindow_DictionaryChanged(object sender, DataGridRowEditEndingEventArgs e)
         {
             var item = ((sender as DataGrid).SelectedItem) as Entry;
-            if (e.EditAction == DataGridEditAction.Commit)
+
+            if (e.EditAction != DataGridEditAction.Commit)
+                return;
+            else if (dictionaryManager.GetCountByWord(item.Word) > 1)
             {
-                if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
-                    item.Word = item.Translation;
+                Logger.LogWarning("Dictionary already contains '" + item.Word + "'.");
+                MessageManager.ShowWarning("Dictionary already contains '" + item.Word + "'.");
+                dictionaryManager.DeleteWord(item.Word);
+            }
+            else
+            {
+                dictionaryManager.FillEmptyValuesInRow(item);
+            }
 
-                if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
-                    item.Translation = Translator.Instance.GetTranslatedString(item.Word);
-
-                if (string.IsNullOrWhiteSpace(item.LastChangeDate))
-                    item.LastChangeDate = DateTime.Now.ToString();
-
-                if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
-                    item.Word = item.Translation = "Autofixed value";
-
+            //Check another one because item.Word can be copied from item.Translation
+            if (dictionaryManager.GetCountByWord(item.Word) > 1)
+            {
+                Logger.LogWarning("Dictionary already contains '" + item.Word + "'.");
+                MessageManager.ShowWarning("Dictionary already contains '" + item.Word + "'.");
+                dictionaryManager.DeleteWord(item.Word);
             }
         }
         #endregion

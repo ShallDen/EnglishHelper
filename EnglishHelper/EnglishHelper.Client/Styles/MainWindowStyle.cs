@@ -37,7 +37,7 @@ namespace EnglishHelper.Client
         }
     }
 
-    public partial class VS2012WindowStyle
+    public partial class MainWindowStyle
     {
         #region sizing event handlers
 

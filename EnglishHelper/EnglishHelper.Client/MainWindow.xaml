@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishHelper.Client"
         mc:Ignorable="d"
-        Title="English Helper [ShallDen]" Height="265.147" Width="663.709" MinHeight="326" MinWidth="715" Icon="Images/ShallDen.png" Style="{DynamicResource VS2012WindowStyle}" AllowsTransparency="True" WindowStyle="None" FontFamily="Constantia" FontSize="13">
+        Title="English Helper [ShallDen]" Height="265.147" Width="663.709" MinHeight="326" MinWidth="715" Icon="Images/ShallDen.png" Style="{DynamicResource MainWindowStyle}" AllowsTransparency="True" WindowStyle="None" FontFamily="Constantia" FontSize="13">
     <Grid>
         <Grid x:Name="MainGrid" Margin="10,10,0,0">
             <TextBox x:Name="inputTextBox" Margin="18,33,0,85" TextWrapping="Wrap" HorizontalAlignment="Left" Width="300" TabIndex="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Constantia" FontSize="13" AcceptsReturn="True"/>

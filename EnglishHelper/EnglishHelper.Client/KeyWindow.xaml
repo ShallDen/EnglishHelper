@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishHelper.Client"
         mc:Ignorable="d"
-        Title="API key validation" Height="143" Width="675" FontFamily="Constantia" ResizeMode="NoResize" BorderThickness="1" BorderBrush="White" WindowStyle="None" Icon="Images/ShallDen.png" Style="{DynamicResource VS2012WindowStyle}" AllowsTransparency="True" MinWidth="675" MinHeight="143" MaxHeight="143" MaxWidth="675" Background="{x:Null}" >
+        Title="API key validation" Height="143" Width="675" FontFamily="Constantia" ResizeMode="NoResize" BorderThickness="1" BorderBrush="White" WindowStyle="None" Icon="Images/ShallDen.png" Style="{DynamicResource KeyWindowStyle}" AllowsTransparency="True" MinWidth="675" MinHeight="143" MaxHeight="143" MaxWidth="675" Background="{x:Null}" >
     <Grid Margin="0,0,0,1">
         <Button x:Name="applyButton" Content="Apply" HorizontalAlignment="Left" Margin="567,35,0,0" VerticalAlignment="Top" Width="75" Height="23" Background="{x:Null}" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <TextBox x:Name="keyTextBox" HorizontalAlignment="Left" Height="23" Margin="15,35,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="527" FontFamily="Comic Sans MS" FontSize="10"/>

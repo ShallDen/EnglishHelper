@@ -60,7 +60,7 @@ namespace EnglishHelper.Client
             InitializeKey();
             InitializeDictionary();
         }
-     
+
         private void MainWindow_ChangeLanguageButtonClick(object sender, EventArgs e)
         {
             ChangeTranslationOrientation();
@@ -216,7 +216,6 @@ namespace EnglishHelper.Client
         {
             dictionaryWindow = new DictionaryWindow();
 
-            dictionaryWindow.AddWordButtonClick += DictionaryWindow_AddWordButtonClick;
             dictionaryWindow.DeleteWordButtonClick += DictionaryWindow_DeleteWordButtonClick;
             dictionaryWindow.SaveDictionaryButtonClick += DictionaryWindow_SaveDictionaryButtonClick;
             dictionaryWindow.DictionaryChanged += DictionaryWindow_DictionaryChanged;
@@ -229,29 +228,29 @@ namespace EnglishHelper.Client
         #endregion
 
         #region Dictionary window handlers
-        private void DictionaryWindow_AddWordButtonClick(object sender, EventArgs e)
-        {
-          //  dictionaryManager.AddWord("New");
-          //  wordDictionary.Add(new Entry { Word = "New", Translation = "Тест нового", LastChangeDate = "11111" });
 
-        }
         private void DictionaryWindow_DeleteWordButtonClick(object sender, EventArgs e)
         {
             var selectedRows = dictionaryWindow.SelectedRows;
             int rowCount = selectedRows.Count;
 
-            if (selectedRows!=null)
+            if (selectedRows != null)
             {
                 while (selectedRows.Count > 0)
                 {
                     var row = selectedRows[0] as Entry;
-                    Logger.LogInfo("Deleting '" + row.Word + "'");
 
                     if (row != null)
-                        dictionaryManager.DeleteWord(row.Word);
-                }
+                    {
+                        row = selectedRows[0] as Entry;
+                        Logger.LogInfo("Deleting '" + row.Word + "'");
 
-                Logger.LogInfo(rowCount + " word(s) deleted");
+                        if (row != null)
+                            dictionaryManager.DeleteWord(row.Word);
+
+                        Logger.LogInfo(rowCount + " word(s) deleted");
+                    }
+                }
             }
         }
 

@@ -29,7 +29,6 @@ namespace EnglishHelper.Client
         void OpenWindow();
         void CloseWindow();
         void BindDictionaryWithGrid(ObservableCollection<Entry> list);
-        event EventHandler AddWordButtonClick;
         event EventHandler DeleteWordButtonClick;
         event EventHandler SaveDictionaryButtonClick;
         event EventHandler<DataGridRowEditEndingEventArgs> DictionaryChanged;
@@ -41,13 +40,11 @@ namespace EnglishHelper.Client
         {
             InitializeComponent();
 
-            addWordButton.Click += AddWordButton_Click;
             deleteWordButton.Click += DeleteWordButton_Click;
             saveDictionaryButton.Click += SaveDictionaryButton_Click;
             wordGrid.RowEditEnding += WordGrid_RowEditEnding;
         }
 
-        public event EventHandler AddWordButtonClick;
         public event EventHandler DeleteWordButtonClick;
         public event EventHandler SaveDictionaryButtonClick;
         public event EventHandler<DataGridRowEditEndingEventArgs> DictionaryChanged;
@@ -58,11 +55,6 @@ namespace EnglishHelper.Client
         }
 
         #region Event throwing
-        private void AddWordButton_Click(object sender, RoutedEventArgs e)
-        {
-             if (AddWordButtonClick != null)
-                  AddWordButtonClick(this, e);
-        }
         private void DeleteWordButton_Click(object sender, RoutedEventArgs e)
         {
             if (DeleteWordButtonClick != null)

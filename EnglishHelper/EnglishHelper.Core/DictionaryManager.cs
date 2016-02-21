@@ -159,7 +159,6 @@ namespace EnglishHelper.Core
             {
                 string translation = Translator.Instance.Text.ToLower() == word.ToLower() ? Translator.Instance.Translation : Translator.Instance.GetTranslatedString(word);
                 wordDictionary.Add(new Entry { Word = word, Translation = translation, LastChangeDate = DateTime.Now.ToString() });
-                Logger.LogInfo("Word '" + word + "' was added in dictionary");
 
                 return true;
             }

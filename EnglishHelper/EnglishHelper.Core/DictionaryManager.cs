@@ -158,7 +158,7 @@ namespace EnglishHelper.Core
             else
             {
                 string translation = Translator.Instance.Text.ToLower() == word.ToLower() ? Translator.Instance.Translation : Translator.Instance.GetTranslatedString(word);
-                wordDictionary.Add(new Entry { Word = word, Translation = translation, LastChangeDate = DateTime.Now.ToString() });
+                wordDictionary.Add(new Entry { Word = word.ToLower(), Translation = translation.ToLower(), LastChangeDate = DateTime.Now.ToString() });
 
                 return true;
             }
@@ -215,18 +215,35 @@ namespace EnglishHelper.Core
 
         public void FillEmptyValuesInRow(Entry item)
         {
-            if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
-                item.Word = item.Translation;
+            var lastLangOrientation = Translator.Instance.LanguageOrienation;
+            Translator.Instance.LanguageOrienation = "en-ru";
 
+            //If word is left
+            if (string.IsNullOrWhiteSpace(item.Word) && !string.IsNullOrWhiteSpace(item.Translation))
+            {
+                Translator.Instance.LanguageOrienation = "ru-en";
+                item.Word = Translator.Instance.GetTranslatedString(item.Translation);
+                Translator.Instance.LanguageOrienation = "en-ru";
+            }
+
+            //If translation is left
             if (!string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation))
                 item.Translation = Translator.Instance.GetTranslatedString(item.Word);
 
+            //If change date is left
             if (string.IsNullOrWhiteSpace(item.LastChangeDate))
                 item.LastChangeDate = DateTime.Now.ToString();
 
+            //If word and translation are left
             if (string.IsNullOrWhiteSpace(item.Word) && string.IsNullOrWhiteSpace(item.Translation) && !string.IsNullOrWhiteSpace(item.LastChangeDate))
-                item.Word = item.Translation = "Autofixed value";
-
+            {
+                item.Word = "autofixed value";
+                item.Translation = "автозаполняемое значение";
+            }
+                
+            item.Word = item.Word.ToLower();
+            item.Translation = item.Translation.ToLower();
+            Translator.Instance.LanguageOrienation = lastLangOrientation;
         }
     }
 }

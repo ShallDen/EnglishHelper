@@ -9,7 +9,7 @@
     <Grid>
         <DataGrid x:Name="wordGrid" Margin="20,37,22,66" FontSize="12" FontFamily="Comic Sans MS" RowHeight="20" RowHeaderWidth="0" AutoGenerateColumns="False" ItemsSource="{Binding}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Word, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="Word"/>
+                <DataGridTextColumn Binding="{Binding Word, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Word"/>
                 <DataGridTextColumn Binding="{Binding Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Translation"/>
                 <DataGridTextColumn Binding="{Binding LastChangeDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Last change date"/>
             </DataGrid.Columns>

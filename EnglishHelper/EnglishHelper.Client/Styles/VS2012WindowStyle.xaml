@@ -3,13 +3,20 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="ShallDenBrushTitle" Color="#FFEAFFB4" />
+    <!--
+    One color brush
+    <SolidColorBrush x:Key="ShallDenBrushTitle1" Color="#FFEAFFB4" />
+    -->
 
-
+    <LinearGradientBrush x:Key="ShallDenBrushTitle" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFFFEFB6" Offset="0"/>
+        <GradientStop Color="#FFEAFFB4" Offset="0.9"/>
+    </LinearGradientBrush>
+    
+    
     <LinearGradientBrush x:Key="ShallDenBrush" EndPoint="0.5,1" StartPoint="0.5,0">
-        <GradientStop Color="#FFECE667" Offset="0"/>
+        <GradientStop Color="#FFEAFFB4" Offset="0"/>
         <GradientStop Color="White" Offset="0.448"/>
-        <GradientStop Color="#FFEAFFB4" Offset="0.096"/>
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="VS2012WindowBorderBrush" Color="#007ACC" />
@@ -31,7 +38,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_border" Property="Background" Value="#FFECE667" />
+                            <Setter TargetName="PART_border" Property="Background" Value="#FDD639" />
                             <Setter TargetName="PART_border" Property="Opacity" Value="0.7" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">

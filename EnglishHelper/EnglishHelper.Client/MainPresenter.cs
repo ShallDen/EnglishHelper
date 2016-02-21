@@ -129,7 +129,11 @@ namespace EnglishHelper.Client
             if (!isFileExist)
             {
                 Logger.LogWarning("Unable to load key. Opening Key window for getting new api key...");
+
+                mainWindow.HideWindow();
                 keyWindow.OpenWindow();
+                mainWindow.DisplayWindow();
+
                 return;
             }
 
@@ -138,7 +142,10 @@ namespace EnglishHelper.Client
             if (string.IsNullOrEmpty(KeyManager.Instance.Key))
             {
                 Logger.LogInfo("Key is empty. Opening Key window for getting new api key...");
+
+                mainWindow.HideWindow();
                 keyWindow.OpenWindow();
+                mainWindow.DisplayWindow();
             }
             else if (KeyManager.Instance.ValidateKey())
             {
@@ -151,7 +158,9 @@ namespace EnglishHelper.Client
                 keyWindow.Key = string.Empty;
                 Logger.LogError("Key isn't valid");
 
+                mainWindow.HideWindow();
                 keyWindow.OpenWindow();
+                mainWindow.DisplayWindow();
             }
         }
 

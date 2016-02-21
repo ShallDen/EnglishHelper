@@ -27,6 +27,8 @@ namespace EnglishHelper.Client
         string SourceText { get; set; }
         string TranslationText { get; set; }
 
+        void HideWindow();
+        void DisplayWindow();
         void CloseWindow();
 
         event EventHandler TranslateButtonClick;
@@ -84,6 +86,16 @@ namespace EnglishHelper.Client
         public void CloseWindow()
         {
             this.Close();
+        }
+
+        public void HideWindow()
+        {
+            this.Visibility = Visibility.Hidden;
+        }
+
+        public void DisplayWindow()
+        {
+            this.Visibility = Visibility.Visible;
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)

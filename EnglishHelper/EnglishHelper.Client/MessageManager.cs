@@ -6,17 +6,17 @@ namespace EnglishHelper.Client
     {
         public static void ShowMessage(string message)
         {
-            MessageBox.Show(message, "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         public static void ShowWarning(string warning)
         {
-            MessageBox.Show(warning, "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(warning, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         public static void ShowError(string error)
         {
-            MessageBox.Show(error, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

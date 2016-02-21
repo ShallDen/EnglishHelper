@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishHelper.Client"
         mc:Ignorable="d"
-        Title="API key validation" Height="132.523" Width="675.224" FontFamily="Constantia" ResizeMode="NoResize" BorderThickness="1" BorderBrush="White">
+        Title="API key validation" Height="143" Width="675" FontFamily="Constantia" ResizeMode="NoResize" BorderThickness="1" BorderBrush="White" WindowStyle="None" Icon="Images/ShallDen.png" Style="{DynamicResource VS2012WindowStyle}" AllowsTransparency="True" MinWidth="675" MinHeight="143" MaxHeight="143" MaxWidth="675" >
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="Black" Offset="0"/>
@@ -13,11 +13,11 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid Margin="0,0,0,1">
-        <Button x:Name="applyButton" Content="Apply" HorizontalAlignment="Left" Margin="567,35,0,0" VerticalAlignment="Top" Width="75" BorderBrush="White" Foreground="#FFF3F3F3" Height="23" Background="{x:Null}" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="applyButton" Content="Apply" HorizontalAlignment="Left" Margin="567,35,0,0" VerticalAlignment="Top" Width="75" Height="23" Background="{x:Null}" FontSize="13" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <TextBox x:Name="keyTextBox" HorizontalAlignment="Left" Height="23" Margin="15,35,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="527" FontFamily="Comic Sans MS" FontSize="10"/>
-        <Label x:Name="label" Content="Please insert your API key here:" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Foreground="#FFF3F3F3" FontSize="13"/>
+        <Label x:Name="label" Content="Please insert your API key here:" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontSize="13"/>
         <StackPanel HorizontalAlignment="Left" Height="21" Margin="15,71,0,0" VerticalAlignment="Top" Width="414">
-            <TextBlock Height="16" Margin="0,0,-196,0" >
+            <TextBlock Height="16" Margin="0,0,-196,0" FontSize="13" >
                        Don't have this key? Please <Hyperlink x:Name="getKeyHyperlink" NavigateUri="">click here</Hyperlink> to get it free.
             </TextBlock>
         </StackPanel>

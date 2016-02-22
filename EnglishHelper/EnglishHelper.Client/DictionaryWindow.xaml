@@ -5,18 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishHelper.Client"
         mc:Ignorable="d"
-        Title="Dictionary" Height="506.2" Width="451.4" FontFamily="Constantia" FontSize="13" MinHeight="506" MinWidth="451" WindowStyle="None" Icon="Images/ShallDen.png" Style="{DynamicResource MainWindowStyle}" AllowsTransparency="True">
+        Title="Dictionary" Height="513" Width="411" FontFamily="Constantia" FontSize="13" WindowStyle="None" Icon="Images/ShallDen.png" Style="{DynamicResource MainWindowStyle}" AllowsTransparency="True" MinHeight="453" MinWidth="332">
     <Grid>
         <DataGrid x:Name="wordGrid" Margin="20,37,22,66" FontSize="12" FontFamily="Comic Sans MS" RowHeight="20" RowHeaderWidth="0" AutoGenerateColumns="False" ItemsSource="{Binding}" Background="{x:Null}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Word, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Word"/>
                 <DataGridTextColumn Binding="{Binding Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Translation"/>
-                <DataGridTextColumn Binding="{Binding LastChangeDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Last change date"/>
+                <DataGridTextColumn Binding="{Binding LastChangeDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Change date"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="deleteWordButton" Content="Delete word" HorizontalAlignment="Left" Margin="155,0,0,15" VerticalAlignment="Bottom" Width="124" FontFamily="Constantia" FontSize="13" Height="35" RenderTransformOrigin="0.827,0.603" Background="{x:Null}"/>
-        <Button x:Name="saveDictionaryButton" Content="Save" HorizontalAlignment="Left" Margin="289,0,0,15" VerticalAlignment="Bottom" Width="124" RenderTransformOrigin="0.784,0.773" Height="35" Background="{x:Null}"/>
-        <Label x:Name="label" Content="Your dictionary:" HorizontalAlignment="Left" Margin="16,7,0,0" VerticalAlignment="Top"/>
-
+        <Button x:Name="deleteWordButton" Content="Delete word" Margin="0,0,173,15" VerticalAlignment="Bottom" FontFamily="Constantia" FontSize="13" Height="31" RenderTransformOrigin="0.827,0.603" Background="{x:Null}" ToolTip="Click to delete selected words" BorderBrush="#FF8AA0E8" Cursor="Hand" HorizontalAlignment="Right" Width="124" TabIndex="1"/>
+        <Button x:Name="saveDictionaryButton" Content="Save" Margin="0,0,22,15" VerticalAlignment="Bottom" RenderTransformOrigin="0.784,0.773" Height="31" Background="{x:Null}" ToolTip="Click to save dictionary" BorderBrush="#FF8AA0E8" Cursor="Hand" HorizontalAlignment="Right" Width="124" TabIndex="2"/>
+        <Label x:Name="label" Content="Your dictionary:" HorizontalAlignment="Left" Margin="16,7,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Grid Height="23" Margin="0,7,22,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="161">
+            <Label x:Name="label1" Content="Count of words:" Margin="35,-1,27,0" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+            <Label x:Name="wordCountLabel" Content="{Binding Count, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="34" HorizontalAlignment="Right" VerticalContentAlignment="Bottom" FontFamily="Comic Sans MS" Height="30" FontSize="14" Margin="0,-5,-5,-2"/>
+        </Grid>
     </Grid>
 </Window>

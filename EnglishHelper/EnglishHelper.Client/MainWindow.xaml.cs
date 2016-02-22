@@ -23,13 +23,14 @@ namespace EnglishHelper.Client
     /// 
     public interface IMainWindow
     {
-        string LanguageOrientation { get; set; }
         string SourceText { get; set; }
         string TranslationText { get; set; }
 
         void HideWindow();
         void DisplayWindow();
         void CloseWindow();
+        void SetEnglishLanguageOrientation();
+        void SetRussianLanguageOrientation();
 
         event EventHandler TranslateButtonClick;
         event EventHandler ChangeLanguageButtonClick;
@@ -105,11 +106,11 @@ namespace EnglishHelper.Client
         public event EventHandler OpenDictionaryButtonClick;
         public event RoutedEventHandler FormLoaded;
 
-        public string LanguageOrientation
-        {
-            get { return languageLabel.Content.ToString(); }
-            set { languageLabel.Content = value; }
-        }
+        //public string LanguageOrientation
+        //{
+        //    get { return languageLabel.Content.ToString(); }
+        //    set { languageLabel.Content = value; }
+        //}
 
         public string SourceText
         {
@@ -136,6 +137,18 @@ namespace EnglishHelper.Client
         public void DisplayWindow()
         {
             this.Visibility = Visibility.Visible;
+        }
+
+        public void SetEnglishLanguageOrientation()
+        {
+            sourceTextFlag.Source = new BitmapImage(new Uri("Images/usa64.png", UriKind.Relative));
+            translationTextFlag.Source = new BitmapImage(new Uri("Images/rus64.png", UriKind.Relative));
+        }
+
+        public void SetRussianLanguageOrientation()
+        {
+            sourceTextFlag.Source = new BitmapImage(new Uri("Images/rus64.png", UriKind.Relative));
+            translationTextFlag.Source = new BitmapImage(new Uri("Images/usa64.png", UriKind.Relative));
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
@@ -187,10 +200,5 @@ namespace EnglishHelper.Client
                 FormLoaded(this, e);
         }
         #endregion
-
-        private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
     }
 }

@@ -86,6 +86,7 @@ namespace EnglishHelper.Client
         public void BindDictionaryWithGrid(ObservableCollection<Entry> list)
         {
             wordGrid.DataContext = list;
+            wordCountLabel.DataContext = list;
         }
     }
 }

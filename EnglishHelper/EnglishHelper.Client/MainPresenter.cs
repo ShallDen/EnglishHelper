@@ -4,6 +4,7 @@ using EnglishHelper.Core;
 using System.Diagnostics;
 using System.Windows.Navigation;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace EnglishHelper.Client
 {
@@ -26,7 +27,6 @@ namespace EnglishHelper.Client
             mainWindow.ChangeTextButtonClick += MainWindow_ChangeTextButtonClick;
             mainWindow.OpenDictionaryButtonClick += MainWindow_OpenDictionaryButtonClick;
             mainWindow.FormLoaded += MainWindow_FormLoaded;
-            mainWindow.LanguageOrientation = "Language: English->Russian";
 
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
@@ -47,7 +47,7 @@ namespace EnglishHelper.Client
 
         private void KeyWindow_WindowClosed(object sender, EventArgs e)
         {
-            if (!KeyManager.Instance.IsKeyValid) // change it to click own close button 
+            if (!KeyManager.Instance.IsKeyValid)
                 mainWindow.CloseWindow();
         }
 
@@ -87,6 +87,77 @@ namespace EnglishHelper.Client
         }
 
 
+        #endregion
+
+        #region Dictionary window handlers
+
+        private void DictionaryWindow_DeleteWordButtonClick(object sender, EventArgs e)
+        {
+            var selectedRows = dictionaryWindow.SelectedRows;
+            int rowCount = selectedRows.Count;
+            string isSymbolSRequired = rowCount > 1 ? "s" : string.Empty;
+
+            if (selectedRows != null)
+            {
+                while (selectedRows.Count > 0)
+                {
+                    var row = selectedRows[0] as Entry;
+
+                    if (row != null)
+                    {
+                        row = selectedRows[0] as Entry;
+                        Logger.LogInfo("Deleting '" + row.Word + "'");
+
+                        if (row != null)
+                            dictionaryManager.DeleteWord(row.Word);
+
+                        Logger.LogInfo(rowCount + " word" + isSymbolSRequired + " deleted");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void DictionaryWindow_SaveDictionaryButtonClick(object sender, EventArgs e)
+        {
+            var wordCount = dictionaryManager.WordCount;
+            string isSymbolSRequired = wordCount > 1 ? "s" : string.Empty;
+
+            dictionaryManager.SaveDictionaryToFile();
+
+            Logger.LogInfo(wordCount + " item" + isSymbolSRequired + " saved to dictionary");
+            MessageManager.ShowMessage(wordCount + " item" + isSymbolSRequired + " saved to dictionary");
+        }
+
+
+        private void DictionaryWindow_DictionaryChanged(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            var item = ((sender as DataGrid).SelectedItem) as Entry;
+
+            if (e.EditAction != DataGridEditAction.Commit)
+                return;
+            else if (dictionaryManager.GetCountByWord(item.Word) > 1)
+            {
+                Logger.LogWarning("Dictionary already contains '" + item.Word + "'.");
+                MessageManager.ShowWarning("Dictionary already contains '" + item.Word + "'.");
+                dictionaryManager.DeleteWord(item.Word);
+            }
+            else
+            {
+                dictionaryManager.FillEmptyValuesInRow(item);
+            }
+
+            //Check another one because item.Word can be copied from item.Translation
+            if (dictionaryManager.GetCountByWord(item.Word) > 1)
+            {
+                Logger.LogWarning("Dictionary already contains '" + item.Word + "'.");
+                MessageManager.ShowWarning("Dictionary already contains '" + item.Word + "'.");
+                dictionaryManager.DeleteWord(item.Word);
+            }
+        }
         #endregion
 
         #region Private Methods
@@ -174,14 +245,14 @@ namespace EnglishHelper.Client
             if (Translator.Instance.LanguageOrienation == "en-ru")
             {
                 Translator.Instance.LanguageOrienation = "ru-en";
-                mainWindow.LanguageOrientation = "Language: Russian->English";
+                mainWindow.SetRussianLanguageOrientation();
                 Logger.LogInfo("Changing translate orientation to " + Translator.Instance.LanguageOrienation);
                 return;
             }
             if (Translator.Instance.LanguageOrienation == "ru-en")
             {
                 Translator.Instance.LanguageOrienation = "en-ru";
-                mainWindow.LanguageOrientation = "Language: English->Russian";
+                mainWindow.SetEnglishLanguageOrientation();
                 Logger.LogInfo("Changing translate orientation to " + Translator.Instance.LanguageOrienation);
                 return;
             }
@@ -236,75 +307,5 @@ namespace EnglishHelper.Client
 
         #endregion
 
-        #region Dictionary window handlers
-
-        private void DictionaryWindow_DeleteWordButtonClick(object sender, EventArgs e)
-        {
-            var selectedRows = dictionaryWindow.SelectedRows;
-            int rowCount = selectedRows.Count;
-            string isSymbolSRequired = rowCount > 1 ? "s" : string.Empty;
-
-            if (selectedRows != null)
-            {
-                while (selectedRows.Count > 0)
-                {
-                    var row = selectedRows[0] as Entry;
-
-                    if (row != null)
-                    {
-                        row = selectedRows[0] as Entry;
-                        Logger.LogInfo("Deleting '" + row.Word + "'");
-
-                        if (row != null)
-                            dictionaryManager.DeleteWord(row.Word);
-
-                        Logger.LogInfo(rowCount + " word" + isSymbolSRequired + " deleted");
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void DictionaryWindow_SaveDictionaryButtonClick(object sender, EventArgs e)
-        {
-            var wordCount = dictionaryManager.WordCount;
-            string isSymbolSRequired = wordCount > 1 ? "s" : string.Empty;
-
-            dictionaryManager.SaveDictionaryToFile();
-
-            Logger.LogInfo(wordCount + " item" + isSymbolSRequired + " saved to dictionary");
-            MessageManager.ShowMessage(wordCount + " item" + isSymbolSRequired + " saved to dictionary");
-        }
-
-
-        private void DictionaryWindow_DictionaryChanged(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            var item = ((sender as DataGrid).SelectedItem) as Entry;
-
-            if (e.EditAction != DataGridEditAction.Commit)
-                return;
-            else if (dictionaryManager.GetCountByWord(item.Word) > 1)
-            {
-                Logger.LogWarning("Dictionary already contains '" + item.Word + "'.");
-                MessageManager.ShowWarning("Dictionary already contains '" + item.Word + "'.");
-                dictionaryManager.DeleteWord(item.Word);
-            }
-            else
-            {
-                dictionaryManager.FillEmptyValuesInRow(item);
-            }
-
-            //Check another one because item.Word can be copied from item.Translation
-            if (dictionaryManager.GetCountByWord(item.Word) > 1)
-            {
-                Logger.LogWarning("Dictionary already contains '" + item.Word + "'.");
-                MessageManager.ShowWarning("Dictionary already contains '" + item.Word + "'.");
-                dictionaryManager.DeleteWord(item.Word);
-            }
-        }
-        #endregion
     }
 }

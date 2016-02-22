@@ -5,21 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishHelper.Client"
         mc:Ignorable="d"
-        Title="English Helper [ShallDen]" Height="326" Width="715" MinHeight="326" MinWidth="715" Icon="Images/ShallDen.png" Style="{DynamicResource MainWindowStyle}" AllowsTransparency="True" WindowStyle="None" FontFamily="Constantia" FontSize="13">
+        Title="English Helper [ShallDen]" Height="316" Width="715" MinWidth="715" Icon="Images/ShallDen.png" Style="{DynamicResource MainWindowStyle}" AllowsTransparency="True" WindowStyle="None" FontFamily="Constantia" FontSize="13" MinHeight="316">
     <Grid>
         <Grid x:Name="MainGrid" Margin="10,10,0,0">
-            <TextBox x:Name="inputTextBox" Margin="18,33,0,85" TextWrapping="Wrap" HorizontalAlignment="Left" Width="300" TabIndex="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Constantia" FontSize="13" AcceptsReturn="True" Text="Type words to translate here..." TextChanged="inputTextBox_TextChanged" BorderBrush="#FF8AA0E8" BorderThickness="1" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" SelectionBrush="#FF6A7189"/>
+            <StackPanel HorizontalAlignment="Left" Height="38" Margin="265,-11,0,0" VerticalAlignment="Top" Width="60">
+                <Image x:Name="sourceTextFlag" Height="36" VerticalAlignment="Bottom" Source="Images/usa64.png" Margin="10,0" RenderTransformOrigin="0.525,0.316"/>
+            </StackPanel>
+            <StackPanel Height="38" Margin="0,-11,15,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="60">
+                <Image x:Name="translationTextFlag" Height="36" VerticalAlignment="Bottom" Source="Images/rus64.png" Margin="10,0" RenderTransformOrigin="0.525,0.316"/>
+            </StackPanel>
+            <TextBox x:Name="inputTextBox" Margin="18,33,0,72" TextWrapping="Wrap" HorizontalAlignment="Left" Width="300" TabIndex="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" FontFamily="Constantia" FontSize="13" AcceptsReturn="True" Text="Type words to translate here..."  BorderBrush="#FF8AA0E8" BorderThickness="1" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" SelectionBrush="#FF6A7189"/>
             <Label x:Name="inputTextLabel" Content="Enter word:" HorizontalAlignment="Left" Margin="14,0,0,0" VerticalAlignment="Top" Width="91" FontFamily="Constantia" FontSize="14" FontWeight="Bold"/>
-            <TextBox x:Name="outputTextBox" Margin="376,32,22,86" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" FontFamily="Constantia" FontSize="13" TabIndex="3" Text="Translated words will be here..." AcceptsReturn="True" SpellCheck.IsEnabled="True" BorderThickness="1" BorderBrush="#FF8AA0E8" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-            <Button x:Name="translateButton" Content="Translate" HorizontalAlignment="Left" Margin="194,0,0,15" Width="124" Height="31" VerticalAlignment="Bottom" FontFamily="Constantia" FontSize="13" TabIndex="5" RenderTransformOrigin="0.515,0.978" Background="{x:Null}" ToolTip="Click for getting a translation" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
-            <Button x:Name="addToDictionaryButton" Content="Add to dictionary" Margin="376,0,0,15" Height="31" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="124" FontFamily="Constantia" FontSize="13" RenderTransformOrigin="0.478,0.925" Background="{x:Null}" TabIndex="6" ToolTip="Click for adding a word to dictionary" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
+            <TextBox x:Name="outputTextBox" Margin="376,32,22,72" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" FontFamily="Constantia" FontSize="13" TabIndex="3" Text="Translated words will be here..." AcceptsReturn="True" SpellCheck.IsEnabled="True" BorderThickness="1" BorderBrush="#FF8AA0E8" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Grid.ColumnSpan="2"/>
             <Label x:Name="translationLabel" Content="Translation:" HorizontalAlignment="Left" Margin="371,0,0,0" VerticalAlignment="Top" FontFamily="Constantia" FontSize="14" FontWeight="Bold"/>
-            <Button x:Name="changeLanguageButton" Content="Change language" HorizontalAlignment="Left" Margin="16,0,0,15" Width="124" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Constantia" FontSize="14" Height="31" VerticalAlignment="Bottom" Background="{x:Null}" TabIndex="4" ToolTip="Click for changing language orientation" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
-            <Label x:Name="languageLabel" Content="Language:" HorizontalAlignment="Left" Margin="18,187,0,42" RenderTransformOrigin="-0.76,0.126" Width="195" FontFamily="Constantia" FontSize="14"/>
-            <Button x:Name="changeTextButton" HorizontalAlignment="Left" Margin="329,92,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="0.122,0.268" Height="37" TabIndex="2" BorderBrush="#FF8AA0E8" Cursor="Hand" ToolTip="Click to swap text and translation" UseLayoutRounding="True" Background="{x:Null}">
+            <Button x:Name="changeTextButton" HorizontalAlignment="Left" Margin="329,92,0,0" Width="37" RenderTransformOrigin="0.122,0.268" TabIndex="2" BorderBrush="#FF8AA0E8" Cursor="Hand" ToolTip="Click to swap text and translation" UseLayoutRounding="True" Background="{x:Null}" Height="37" VerticalAlignment="Top">
                 <Image Source="Images/swap64x64.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="29" UseLayoutRounding="True"/>
             </Button>
-            <Button x:Name="openDictionaryButton" Content="Open dictionary" Margin="543,0,0,15" BorderBrush="#FF8AA0E8" Background="{x:Null}" FontFamily="Constantia" FontSize="13" Height="31" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="124" TabIndex="7" ToolTip="Click to open the dictionary" Cursor="Hand"/>
+            <Grid HorizontalAlignment="Left" Margin="18,204,0,20" Width="300">
+                <Button x:Name="changeLanguageButton" Content="Change language" HorizontalAlignment="Left" Width="124" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Constantia" FontSize="14" Height="31" VerticalAlignment="Bottom" Background="{x:Null}" TabIndex="4" ToolTip="Click for changing language orientation" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
+                <Button x:Name="translateButton" Content="Translate" HorizontalAlignment="Left" Margin="176,0,0,0" Width="124" Height="31" VerticalAlignment="Bottom" FontFamily="Constantia" FontSize="13" TabIndex="5" RenderTransformOrigin="0.515,0.978" Background="{x:Null}" ToolTip="Click for getting a translation" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
+            </Grid>
+            <Grid HorizontalAlignment="Right" Height="34" Margin="0,0,22,17" VerticalAlignment="Bottom" Width="291">
+                <Button x:Name="addToDictionaryButton" Content="Add to dictionary" Margin="0,0,0,3" Height="31" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Width="124" FontFamily="Constantia" FontSize="13" RenderTransformOrigin="0.478,0.925" Background="{x:Null}" TabIndex="6" ToolTip="Click for adding a word to dictionary" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
+                <Button x:Name="openDictionaryButton" Content="Open dictionary" Margin="167,0,0,3" BorderBrush="#FF8AA0E8" Background="{x:Null}" FontFamily="Constantia" FontSize="13" Height="31" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="124" TabIndex="7" ToolTip="Click to open the dictionary" Cursor="Hand"/>
+            </Grid>
         </Grid>
 
     </Grid>

@@ -106,12 +106,6 @@ namespace EnglishHelper.Client
         public event EventHandler OpenDictionaryButtonClick;
         public event RoutedEventHandler FormLoaded;
 
-        //public string LanguageOrientation
-        //{
-        //    get { return languageLabel.Content.ToString(); }
-        //    set { languageLabel.Content = value; }
-        //}
-
         public string SourceText
         {
             get { return inputTextBox.Text; }
@@ -199,6 +193,7 @@ namespace EnglishHelper.Client
             if (FormLoaded != null)
                 FormLoaded(this, e);
         }
+
         #endregion
     }
 }

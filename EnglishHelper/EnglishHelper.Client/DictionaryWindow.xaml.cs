@@ -16,6 +16,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Windows.Media.Animation;
 
 namespace EnglishHelper.Client
 {

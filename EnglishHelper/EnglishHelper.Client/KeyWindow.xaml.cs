@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
 using System.Configuration;
+using System.Windows.Media.Animation;
 
 namespace EnglishHelper.Client
 {
@@ -60,6 +61,7 @@ namespace EnglishHelper.Client
                 }
             };
 
+            this.Closing += KeyWindow_Closing;
             this.Closed += KeyWindow_Closed;
         }
 
@@ -107,6 +109,15 @@ namespace EnglishHelper.Client
         {
             if (WindowClosed != null)
                 WindowClosed(this, e);
+        }
+
+        private void KeyWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Closing -= KeyWindow_Closing;
+            e.Cancel = true;
+            var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(1));
+            anim.Completed += (s, _) => this.Close();
+            this.BeginAnimation(UIElement.OpacityProperty, anim);
         }
 
         #endregion

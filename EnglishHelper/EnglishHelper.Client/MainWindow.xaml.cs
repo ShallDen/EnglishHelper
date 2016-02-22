@@ -54,6 +54,46 @@ namespace EnglishHelper.Client
             addToDictionaryButton.Click += addToDictionaryButton_Click;
             changeTextButton.Click += changeTextButton_Click;
             openDictionaryButton.Click += OpenDictionaryButton_Click;
+
+            inputTextBox.Foreground = Brushes.Gray;
+            outputTextBox.Foreground = Brushes.Gray;
+
+            inputTextBox.GotFocus += (object sender, RoutedEventArgs e) =>
+            {
+                if (inputTextBox.Text == "Type words to translate here...")
+                {
+                    inputTextBox.Foreground = Brushes.Black;
+                    inputTextBox.Text = string.Empty;
+                }
+            };
+
+            inputTextBox.LostFocus += (object sender, RoutedEventArgs e) =>
+            {
+                if (string.IsNullOrWhiteSpace(inputTextBox.Text))
+                {
+                    inputTextBox.Foreground = Brushes.Gray;
+                    inputTextBox.Text = "Type words to translate here...";
+                }
+            };
+
+            outputTextBox.GotFocus += (object sender, RoutedEventArgs e) =>
+            {
+                if (outputTextBox.Text == "Translated words will be here...")
+                {
+                    outputTextBox.Foreground = Brushes.Black;
+                    outputTextBox.Text = string.Empty;
+                }
+            };
+
+            outputTextBox.LostFocus += (object sender, RoutedEventArgs e) =>
+            {
+                if (string.IsNullOrWhiteSpace(outputTextBox.Text))
+                {
+                    outputTextBox.Foreground = Brushes.Gray;
+                    outputTextBox.Text = "Translated words will be here...";
+                }
+            };
+
             this.Loaded += MainWindow_Loaded;
             this.Closed += MainWindow_Closed;
         }
@@ -113,6 +153,9 @@ namespace EnglishHelper.Client
         }
         private void translaleButton_Click(object sender, RoutedEventArgs e)
         {
+            inputTextBox.Foreground = Brushes.Black;
+            outputTextBox.Foreground = Brushes.Black;
+
             if (TranslateButtonClick != null)
                 TranslateButtonClick(this, EventArgs.Empty);
         }
@@ -125,6 +168,9 @@ namespace EnglishHelper.Client
 
         private void changeTextButton_Click(object sender, RoutedEventArgs e)
         {
+            inputTextBox.Foreground = Brushes.Black;
+            outputTextBox.Foreground = Brushes.Black;
+
             if (ChangeTextButtonClick != null)
                 ChangeTextButtonClick(this, EventArgs.Empty);
         }
@@ -141,5 +187,10 @@ namespace EnglishHelper.Client
                 FormLoaded(this, e);
         }
         #endregion
+
+        private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

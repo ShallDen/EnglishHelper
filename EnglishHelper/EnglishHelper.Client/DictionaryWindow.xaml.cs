@@ -75,7 +75,7 @@ namespace EnglishHelper.Client
 
         public void OpenWindow()
         {
-            this.ShowDialog();
+            this.Show();
         }
 
         public void CloseWindow()

@@ -39,6 +39,27 @@ namespace EnglishHelper.Client
 
             applyButton.Click += ApplyButton_Click;
             getKeyHyperlink.RequestNavigate += GetKeyHyperLink_Clicked;
+
+            keyTextBox.Foreground = Brushes.Gray;
+
+            keyTextBox.GotFocus += (object sender, RoutedEventArgs e) =>
+            {
+                if (keyTextBox.Text == "Please input your key here...")
+                {
+                    keyTextBox.Foreground = Brushes.Black;
+                    keyTextBox.Text = string.Empty;
+                }
+            };
+
+            keyTextBox.LostFocus += (object sender, RoutedEventArgs e) =>
+            {
+                if (string.IsNullOrWhiteSpace(keyTextBox.Text))
+                {
+                    keyTextBox.Foreground = Brushes.Gray;
+                    keyTextBox.Text = "Please input your key here...";
+                }
+            };
+
             this.Closed += KeyWindow_Closed;
         }
 

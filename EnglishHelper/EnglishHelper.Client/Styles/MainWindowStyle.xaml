@@ -146,6 +146,11 @@
                                                     Data="M0,8 H8 M0,7 H8 M0,6 H8"
                                                     />
                                             </Grid>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Minimize
+                                                </ToolTip>
+                                            </Button.ToolTip>
                                         </Button>
                                         <Button
                                             Grid.Column="3"
@@ -166,6 +171,11 @@
                                                     Data="M0,0 H8 V8 H0 V0 M0,1 H8 M0,2 H8"
                                                     />
                                             </Grid>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Maximize
+                                                </ToolTip>
+                                            </Button.ToolTip>
                                         </Button>
                                         <Button
                                             Grid.Column="4"
@@ -184,6 +194,11 @@
                                                     Data="M0,0 L8,8 M0,8 L8,0"
                                                     />
                                             </Grid>
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    Close
+                                                </ToolTip>
+                                            </Button.ToolTip>
                                         </Button>
                                     </Grid>
                                 </Border>

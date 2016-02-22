@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Dictionary" Height="506.2" Width="451.4" FontFamily="Constantia" FontSize="13" MinHeight="506" MinWidth="451" WindowStyle="None" Icon="Images/ShallDen.png" Style="{DynamicResource MainWindowStyle}" AllowsTransparency="True">
     <Grid>
-        <DataGrid x:Name="wordGrid" Margin="20,37,22,66" FontSize="12" FontFamily="Comic Sans MS" RowHeight="20" RowHeaderWidth="0" AutoGenerateColumns="False" ItemsSource="{Binding}">
+        <DataGrid x:Name="wordGrid" Margin="20,37,22,66" FontSize="12" FontFamily="Comic Sans MS" RowHeight="20" RowHeaderWidth="0" AutoGenerateColumns="False" ItemsSource="{Binding}" Background="{x:Null}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Word, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Word"/>
                 <DataGridTextColumn Binding="{Binding Translation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Translation"/>

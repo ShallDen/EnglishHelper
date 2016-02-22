@@ -242,6 +242,7 @@ namespace EnglishHelper.Client
         {
             var selectedRows = dictionaryWindow.SelectedRows;
             int rowCount = selectedRows.Count;
+            string isSymbolSRequired = rowCount > 1 ? "s" : string.Empty;
 
             if (selectedRows != null)
             {
@@ -257,7 +258,11 @@ namespace EnglishHelper.Client
                         if (row != null)
                             dictionaryManager.DeleteWord(row.Word);
 
-                        Logger.LogInfo(rowCount + " word(s) deleted");
+                        Logger.LogInfo(rowCount + " word" + isSymbolSRequired + " deleted");
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -266,11 +271,12 @@ namespace EnglishHelper.Client
         private void DictionaryWindow_SaveDictionaryButtonClick(object sender, EventArgs e)
         {
             var wordCount = dictionaryManager.WordCount;
+            string isSymbolSRequired = wordCount > 1 ? "s" : string.Empty;
 
             dictionaryManager.SaveDictionaryToFile();
 
-            Logger.LogInfo(wordCount + " item(s) saved to dictionary");
-            MessageManager.ShowMessage(wordCount + " item(s) saved to dictionary");
+            Logger.LogInfo(wordCount + " item" + isSymbolSRequired + " saved to dictionary");
+            MessageManager.ShowMessage(wordCount + " item" + isSymbolSRequired + " saved to dictionary");
         }
 
 

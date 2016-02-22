@@ -157,9 +157,13 @@ namespace EnglishHelper.Core
             }
             else
             {
+                var lastLangOrientation = Translator.Instance.LanguageOrienation;
+                Translator.Instance.LanguageOrienation = "en-ru";
+
                 string translation = Translator.Instance.Text.ToLower() == word.ToLower() ? Translator.Instance.Translation : Translator.Instance.GetTranslatedString(word);
                 wordDictionary.Add(new Entry { Word = word.ToLower(), Translation = translation.ToLower(), LastChangeDate = DateTime.Now.ToString() });
 
+                Translator.Instance.LanguageOrienation = lastLangOrientation;
                 return true;
             }
         }

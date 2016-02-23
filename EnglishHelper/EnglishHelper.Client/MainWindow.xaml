@@ -22,7 +22,7 @@
                 <Image Source="Images/swap64x64.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="29" UseLayoutRounding="True"/>
             </Button>
             <Grid HorizontalAlignment="Left" Margin="18,204,0,20" Width="300">
-                <Button x:Name="changeLanguageButton" Content="Change language" HorizontalAlignment="Left" Width="124" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Constantia" FontSize="14" Height="31" VerticalAlignment="Bottom" Background="{x:Null}" TabIndex="4" ToolTip="Click for changing language orientation" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
+                <Button x:Name="changeLanguageButton" Content="Change language" HorizontalAlignment="Left" Width="124" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Constantia" FontSize="14" Height="31" VerticalAlignment="Bottom" Background="{x:Null}" TabIndex="4" ToolTip="Click for changing language orientation" BorderBrush="#FF8AA0E8" Cursor="Hand" Foreground="Black"/>
                 <Button x:Name="translateButton" Content="Translate" HorizontalAlignment="Left" Margin="176,0,0,0" Width="124" Height="31" VerticalAlignment="Bottom" FontFamily="Constantia" FontSize="13" TabIndex="5" RenderTransformOrigin="0.515,0.978" Background="{x:Null}" ToolTip="Click for getting a translation" BorderBrush="#FF8AA0E8" Cursor="Hand"/>
             </Grid>
             <Grid HorizontalAlignment="Right" Height="34" Margin="0,0,22,17" VerticalAlignment="Bottom" Width="291">

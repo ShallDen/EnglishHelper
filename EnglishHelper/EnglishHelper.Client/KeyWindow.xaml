@@ -19,6 +19,15 @@
                        Don't have this key? Please <Hyperlink x:Name="getKeyHyperlink" NavigateUri="">click here</Hyperlink> to get it free.
             </TextBlock>
         </StackPanel>
-
     </Grid>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Opacity" From="0" To="1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
 </Window>

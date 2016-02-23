@@ -44,6 +44,7 @@ namespace EnglishHelper.Client
             deleteWordButton.Click += DeleteWordButton_Click;
             saveDictionaryButton.Click += SaveDictionaryButton_Click;
             wordGrid.RowEditEnding += WordGrid_RowEditEnding;
+            this.Closing += DictionaryWindow_Closing;
         }
 
         public event EventHandler DeleteWordButtonClick;
@@ -88,6 +89,15 @@ namespace EnglishHelper.Client
         {
             wordGrid.DataContext = list;
             wordCountLabel.DataContext = list;
+        }
+
+        private void DictionaryWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Closing -= DictionaryWindow_Closing;
+            e.Cancel = true;
+            var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(1));
+            anim.Completed += (s, _) => this.Close();
+            this.BeginAnimation(UIElement.OpacityProperty, anim);
         }
     }
 }

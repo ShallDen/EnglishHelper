@@ -30,6 +30,15 @@
                 <Button x:Name="openDictionaryButton" Content="Open dictionary" Margin="167,0,0,3" BorderBrush="#FF8AA0E8" Background="{x:Null}" FontFamily="Constantia" FontSize="13" Height="31" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="124" TabIndex="7" ToolTip="Click to open the dictionary" Cursor="Hand"/>
             </Grid>
         </Grid>
-
     </Grid>
+    
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Opacity" From="0" To="1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
 </Window>

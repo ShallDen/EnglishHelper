@@ -27,6 +27,7 @@ namespace EnglishHelper.Client
             mainWindow.ChangeTextButtonClick += MainWindow_ChangeTextButtonClick;
             mainWindow.OpenDictionaryButtonClick += MainWindow_OpenDictionaryButtonClick;
             mainWindow.FormLoaded += MainWindow_FormLoaded;
+            mainWindow.PreClosingWindow += MainWindow_PreClosingWindow;
 
             keyWindow.ApplyButtonClick += KeyWindow_ApplyButtonClick;
             keyWindow.GetKeyHyperLinkClick += KeyWindow_GetKeyHyperLinkClick;
@@ -86,6 +87,11 @@ namespace EnglishHelper.Client
             OpenDictionary();
         }
 
+        private void MainWindow_PreClosingWindow(object sender, EventArgs e)
+        {
+            if (dictionaryWindow != null)
+                dictionaryWindow.CloseWindow();
+        }
 
         #endregion
 

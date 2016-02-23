@@ -31,6 +31,7 @@ namespace EnglishHelper.Client
         void CloseWindow();
         void SetEnglishLanguageOrientation();
         void SetRussianLanguageOrientation();
+        void NotifyWindowsToClose();
 
         event EventHandler TranslateButtonClick;
         event EventHandler ChangeLanguageButtonClick;
@@ -38,6 +39,7 @@ namespace EnglishHelper.Client
         event EventHandler ChangeTextButtonClick;
         event EventHandler OpenDictionaryButtonClick;
         event RoutedEventHandler FormLoaded;
+        event EventHandler PreClosingWindow;
     }
 
     public partial class MainWindow : Window, IMainWindow
@@ -105,6 +107,7 @@ namespace EnglishHelper.Client
         public event EventHandler ChangeTextButtonClick;
         public event EventHandler OpenDictionaryButtonClick;
         public event RoutedEventHandler FormLoaded;
+        public event EventHandler PreClosingWindow;
 
         public string SourceText
         {
@@ -149,6 +152,12 @@ namespace EnglishHelper.Client
         {
             Logger.LogInfo("Application was closed.");
             Environment.Exit(0);
+        }
+
+        public void NotifyWindowsToClose()
+        {
+            if (PreClosingWindow != null)
+                PreClosingWindow(this, EventArgs.Empty);
         }
 
         #region Events throwing

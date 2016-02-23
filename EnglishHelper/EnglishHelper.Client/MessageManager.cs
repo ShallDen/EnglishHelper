@@ -1,22 +1,23 @@
-﻿using System.Windows;
-
-namespace EnglishHelper.Client
+﻿namespace EnglishHelper.Client
 {
     public static class MessageManager 
     {
         public static void ShowMessage(string message)
         {
-            MessageBox.Show(message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            PopupWindow popup = new PopupWindow();
+            popup.ShowMessage("Information", message);
         }
 
         public static void ShowWarning(string warning)
         {
-            MessageBox.Show(warning, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            PopupWindow popup = new PopupWindow();
+            popup.ShowMessage("Warning", warning);
         }
 
         public static void ShowError(string error)
         {
-            MessageBox.Show(error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            PopupWindow popup = new PopupWindow();
+            popup.ShowMessage("Error", error);
         }
     }
 }

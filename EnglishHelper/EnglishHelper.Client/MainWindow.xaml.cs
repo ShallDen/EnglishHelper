@@ -81,7 +81,7 @@ namespace EnglishHelper.Client
 
             outputTextBox.GotFocus += (object sender, RoutedEventArgs e) =>
             {
-                if (outputTextBox.Text == "Translated words will be here...")
+                if (outputTextBox.Text == "Translation will be here...")
                 {
                     outputTextBox.Foreground = Brushes.Black;
                     outputTextBox.Text = string.Empty;
@@ -93,7 +93,7 @@ namespace EnglishHelper.Client
                 if (string.IsNullOrWhiteSpace(outputTextBox.Text))
                 {
                     outputTextBox.Foreground = Brushes.Gray;
-                    outputTextBox.Text = "Translated words will be here...";
+                    outputTextBox.Text = "Translation will be here...";
                 }
             };
 

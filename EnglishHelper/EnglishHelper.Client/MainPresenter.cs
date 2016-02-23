@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Windows.Navigation;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace EnglishHelper.Client
 {

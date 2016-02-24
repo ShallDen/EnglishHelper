@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net;
 using EnglishHelper.Core;
+using System.Windows.Media.Animation;
 
 namespace EnglishHelper.Client
 {
@@ -98,8 +99,9 @@ namespace EnglishHelper.Client
             };
 
             this.Loaded += MainWindow_Loaded;
+            this.Closing += MainWindow_Closing;
             this.Closed += MainWindow_Closed;
-        }
+        }    
 
         public event EventHandler TranslateButtonClick;
         public event EventHandler ChangeLanguageButtonClick;
@@ -202,6 +204,25 @@ namespace EnglishHelper.Client
             if (FormLoaded != null)
                 FormLoaded(this, e);
         }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Closing -= MainWindow_Closing;
+            e.Cancel = true;
+
+            if (this.Visibility != Visibility.Hidden)
+            {
+                var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromMilliseconds(500));
+                anim.Completed += (s, _) => this.Close();
+                this.BeginAnimation(UIElement.OpacityProperty, anim);
+            }
+            else
+            {
+                //Close application without animation
+                e.Cancel = false;
+            }
+        }
+
 
         #endregion
     }

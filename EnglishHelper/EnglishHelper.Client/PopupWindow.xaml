@@ -12,9 +12,9 @@
         AllowsTransparency="True"
         Background="Transparent" ShowInTaskbar="False" >
 
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Border Width="auto" Height="auto" Background="Black" BorderThickness="2" 
-                CornerRadius="20,3,20,3" Margin="4,6,10,7" BorderBrush="White" Opacity="50">
+                CornerRadius="20,3,20,3" Margin="4,6,10,7" BorderBrush="White" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="29*"></RowDefinition>
@@ -26,7 +26,7 @@
                     <TextBlock x:Name="title" Text="Title" Padding="15" 
                            FontFamily="Comic Sans MS" FontSize="13" Foreground="White" Margin="0,-9,0,0"/>
 
-                    <Button x:Name="closeButton" HorizontalAlignment="Left" Margin="266,3,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="6.442,-0.357" BorderBrush="{x:Null}" Click="closeButton_Click" Background="{x:Null}" Foreground="White" Height="22">
+                    <Button x:Name="closeButton" HorizontalAlignment="Left" Margin="265,4,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="6.442,-0.357" BorderBrush="{x:Null}" Click="closeButton_Click" Background="{x:Null}" Foreground="White" Height="22">
                         <Image Source="Images/close64x64.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="21" Height="20" UseLayoutRounding="True"/>
                     </Button>
                     
@@ -45,14 +45,7 @@
         <EventTrigger RoutedEvent="Window.Loaded">
             <BeginStoryboard>
                 <Storyboard>
-                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Opacity" From="0" To="1" />
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-        <EventTrigger RoutedEvent="Window.Unloaded">
-            <BeginStoryboard>
-                <Storyboard>
-                    <DoubleAnimation Duration="00:00:03" Storyboard.TargetProperty="Opacity" From="1" To="0" />
+                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Opacity" From="0" To="0.7" />
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>

@@ -81,15 +81,12 @@ namespace EnglishHelper.Client
         {
             sender.ForWindowFromTemplate(w =>
             {
-                if(w is MainWindow)
+                if (w is MainWindow)
                 {
                     ((MainWindow)w).NotifyWindowsToClose();
-                    
                 }
 
-                var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(1));
-                anim.Completed += (s, _) => w.Close();
-                w.BeginAnimation(UIElement.OpacityProperty, anim);
+                w.Close();
             });
         }
 

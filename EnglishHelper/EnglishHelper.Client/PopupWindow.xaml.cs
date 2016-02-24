@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace EnglishHelper.Client
 {
@@ -31,10 +32,18 @@ namespace EnglishHelper.Client
         public PopupWindow()
         {
             InitializeComponent();
+            this.Activated += PopupWindow_Activated;
 
             this.Closing += PopupWindow_Closing;
-            this.MouseLeftButtonDown += (object sender, MouseButtonEventArgs e) => this.DragMove();
+            this.MouseLeftButtonDown += (object sender, MouseButtonEventArgs e) => this.DragMove(); //allows drag popup
+
+            Point position = Mouse.GetPosition(null);
+
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Left = 0;
+            this.Top = 0;   
         }
+
         public new string Title
         {
             get { return title.Text; }
@@ -46,14 +55,6 @@ namespace EnglishHelper.Client
             get { return message.Text; }
             set { message.Text = value; }
         }
-    
-
-        private void PopupWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(2));
-            anim.Completed += (s, _) => this.Close();
-            this.BeginAnimation(UIElement.OpacityProperty, anim);
-        }
 
         public void ShowMessage(string title, string message)
         {
@@ -64,6 +65,34 @@ namespace EnglishHelper.Client
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
+            PopupWindow_Closing(sender, new System.ComponentModel.CancelEventArgs());
+        }
+
+        private void PopupWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(2));
+            anim.Completed += (s, _) => this.Close();
+            this.BeginAnimation(UIElement.OpacityProperty, anim);
+        }
+
+        private void PopupWindow_Activated(object sender, EventArgs e)
+        {
+            StartCloseTimer();
+            this.Focus();
+        }
+        private void StartCloseTimer()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(3d);
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            DispatcherTimer timer = (DispatcherTimer)sender;
+            timer.Stop();
+            timer.Tick -= TimerTick;
             PopupWindow_Closing(sender, new System.ComponentModel.CancelEventArgs());
         }
     }

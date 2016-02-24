@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using EnglishHelper.Core;
 
 namespace EnglishHelper.Client
 {
@@ -32,16 +34,12 @@ namespace EnglishHelper.Client
         public PopupWindow()
         {
             InitializeComponent();
-            this.Activated += PopupWindow_Activated;
 
+            this.Activated += PopupWindow_Activated;
             this.Closing += PopupWindow_Closing;
             this.MouseLeftButtonDown += (object sender, MouseButtonEventArgs e) => this.DragMove(); //allows drag popup
 
-            Point position = Mouse.GetPosition(null);
-
-            this.WindowStartupLocation = WindowStartupLocation.Manual;
-            this.Left = 0;
-            this.Top = 0;   
+            MoveToCursorPosition();
         }
 
         public new string Title
@@ -63,6 +61,15 @@ namespace EnglishHelper.Client
             this.Show();
         }
 
+        private void MoveToCursorPosition()
+        {
+            var position = MouseHelper.GetMousePosition();
+
+            //Change coordinates to be more accurate and not to interfere user
+            this.Left = position.X + 10;
+            this.Top = position.Y - 120;
+        }
+
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
             PopupWindow_Closing(sender, new System.ComponentModel.CancelEventArgs());
@@ -80,6 +87,7 @@ namespace EnglishHelper.Client
             StartCloseTimer();
             this.Focus();
         }
+
         private void StartCloseTimer()
         {
             DispatcherTimer timer = new DispatcherTimer();

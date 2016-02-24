@@ -26,25 +26,27 @@ namespace EnglishHelper.Client
         void ShowMessage(string title, string message);
     }
 
-    public partial class PopupWindow : Window, IPopupWindow
+    public partial class PopupWindow : Window
     {
+        public PopupWindow()
+        {
+            InitializeComponent();
+
+            this.Closing += PopupWindow_Closing;
+            this.MouseLeftButtonDown += (object sender, MouseButtonEventArgs e) => this.DragMove();
+        }
         public new string Title
         {
-            get { return titleLabel.Content.ToString(); }
-            set { titleLabel.Content = value; }
+            get { return title.Text; }
+            set { title.Text = value; }
         }
 
         public string Message
         {
-            get { return messageLabel.Content.ToString(); }
-            set { messageLabel.Content = value; }
+            get { return message.Text; }
+            set { message.Text = value; }
         }
-
-        public PopupWindow()
-        {
-            InitializeComponent();
-            this.Closing += PopupWindow_Closing;
-        }
+    
 
         private void PopupWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {

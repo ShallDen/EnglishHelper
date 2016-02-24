@@ -7,29 +7,40 @@
         mc:Ignorable="d"
         Title="PopupWindow" 
         Height="118.108" 
-        Width="300.191" 
+        Width="308.191" 
         WindowStyle="None" 
         AllowsTransparency="True"
-        Background="Transparent" >
+        Background="Transparent" ShowInTaskbar="False" >
 
-    <Border Background="Black" Opacity="0.6" BorderThickness="1" CornerRadius="20,3,20,3" Margin="4,6,10,7" BorderBrush="White">
-        <Border.BitmapEffect>
-            <DropShadowBitmapEffect Color="Black" 
-                  Opacity="0.7" Direction="270" 
-                  ShadowDepth="0.7" />
-        </Border.BitmapEffect>
-        <Grid>
-            <Button x:Name="closeButton" HorizontalAlignment="Left" Margin="260,3,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="6.442,-0.357" BorderBrush="{x:Null}" Click="closeButton_Click" Background="{x:Null}" Foreground="White" Height="22">
-                <Image Source="Images/close64x64.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="21" Height="20" UseLayoutRounding="True"/>
-            </Button>
-            <Label x:Name="titleLabel" Content="Title" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS" Width="253" Foreground="White"/>
-            <Label x:Name="messageLabel"  HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS" Foreground="#FFFFF5F5" MinHeight="50" MinWidth="50" >
-                <Label.Content>
-                    <TextBlock TextWrapping="Wrap">Message</TextBlock>
-                </Label.Content>
-            </Label>
-        </Grid>
-    </Border>
+    <Grid>
+        <Border Width="auto" Height="auto" Background="Black" BorderThickness="2" 
+                CornerRadius="20,3,20,3" Margin="4,6,10,7" BorderBrush="White" Opacity="50">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="29*"></RowDefinition>
+                    <RowDefinition Height="72*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0">
+                    <TextBlock x:Name="title" Text="Title" Padding="15" 
+                           FontFamily="Comic Sans MS" FontSize="13" Foreground="White" Margin="0,-9,0,0"/>
+
+                    <Button x:Name="closeButton" HorizontalAlignment="Left" Margin="266,3,0,0" VerticalAlignment="Top" Width="21" RenderTransformOrigin="6.442,-0.357" BorderBrush="{x:Null}" Click="closeButton_Click" Background="{x:Null}" Foreground="White" Height="22">
+                        <Image Source="Images/close64x64.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="21" Height="20" UseLayoutRounding="True"/>
+                    </Button>
+                    
+                </Grid>
+                <Grid Grid.Row="1">
+                    <TextBlock x:Name="message" VerticalAlignment="Center" FontSize="12" 
+                               Foreground="White" HorizontalAlignment="Left" 
+                               FontFamily="Comic Sans MS" Text="Message" TextWrapping="Wrap" 
+                               Height="60" Width="267" Margin="15,6,0,6"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+
     <Window.Triggers>
         <EventTrigger RoutedEvent="Window.Loaded">
             <BeginStoryboard>

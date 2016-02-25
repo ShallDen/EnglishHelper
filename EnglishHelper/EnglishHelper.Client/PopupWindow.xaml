@@ -10,11 +10,15 @@
         Width="308.191" 
         WindowStyle="None" 
         AllowsTransparency="True"
-        Background="Transparent" ShowInTaskbar="False" >
+        ShowInTaskbar="False" 
+        Background="Transparent">
 
     <Grid x:Name="MainGrid">
-        <Border Width="auto" Height="auto" Background="Black" BorderThickness="2" 
-                CornerRadius="20,3,20,3" Margin="4,6,10,7" BorderBrush="White" >
+        <Border Width="auto" Height="auto" BorderThickness="2" 
+                CornerRadius="20,3,20,3" Margin="4,6,10,7" BorderBrush="White">
+            <Border.Background>
+                <SolidColorBrush Color="Black" Opacity="0.7"/>
+            </Border.Background>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="29*"></RowDefinition>
@@ -45,7 +49,7 @@
         <EventTrigger RoutedEvent="Window.Loaded">
             <BeginStoryboard>
                 <Storyboard>
-                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Opacity" From="0" To="0.7" />
+                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Opacity" From="0" To="1" />
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>

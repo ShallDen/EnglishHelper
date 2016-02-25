@@ -272,7 +272,7 @@ namespace EnglishHelper.Client
         {
             if (!string.IsNullOrWhiteSpace(mainWindow.SourceText))
             {
-                string translatedString = Translator.Instance.GetTranslatedString(mainWindow.SourceText);
+                string translatedString = Translator.Instance.GetTranslatedString(mainWindow.SourceText.Trim());
                 if (!string.IsNullOrEmpty(translatedString))
                     mainWindow.TranslationText = translatedString;
             }
@@ -280,7 +280,7 @@ namespace EnglishHelper.Client
 
         private void AddToDictionary()
         {
-            bool isAdded = dictionaryManager.AddWord(mainWindow.SourceText);
+            bool isAdded = dictionaryManager.AddWord(mainWindow.SourceText.Trim());
 
             if (isAdded)
             {
@@ -298,8 +298,9 @@ namespace EnglishHelper.Client
 
         private void ChangeText(object sender, EventArgs e)
         {
+            string content = mainWindow.SourceText;
             mainWindow.SourceText = mainWindow.TranslationText;
-            MainWindow_TranslateButtonClick(sender, e);
+            mainWindow.TranslationText = content;
         }
 
         private void OpenDictionary()

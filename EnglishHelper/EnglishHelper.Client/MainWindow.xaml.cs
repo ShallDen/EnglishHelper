@@ -39,12 +39,15 @@ namespace EnglishHelper.Client
         event EventHandler AddToDictionaryButtonClick;
         event EventHandler ChangeTextButtonClick;
         event EventHandler OpenDictionaryButtonClick;
-        event RoutedEventHandler FormLoaded;
         event EventHandler PreClosingWindow;
+        event RoutedEventHandler FormLoaded;
     }
 
     public partial class MainWindow : Window, IMainWindow
     {
+        private string defaultSourceText = "Type words to translate here...";
+        private string defaultTranslationText = "Translation will be here...";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -62,9 +65,12 @@ namespace EnglishHelper.Client
             inputTextBox.Foreground = Brushes.Gray;
             outputTextBox.Foreground = Brushes.Gray;
 
+            inputTextBox.Text = defaultSourceText;
+            outputTextBox.Text = defaultTranslationText;
+
             inputTextBox.GotFocus += (object sender, RoutedEventArgs e) =>
             {
-                if (inputTextBox.Text == "Type words to translate here...")
+                if (inputTextBox.Text == defaultSourceText)
                 {
                     inputTextBox.Foreground = Brushes.Black;
                     inputTextBox.Text = string.Empty;
@@ -76,13 +82,13 @@ namespace EnglishHelper.Client
                 if (string.IsNullOrWhiteSpace(inputTextBox.Text))
                 {
                     inputTextBox.Foreground = Brushes.Gray;
-                    inputTextBox.Text = "Type words to translate here...";
+                    inputTextBox.Text = defaultSourceText;
                 }
             };
 
             outputTextBox.GotFocus += (object sender, RoutedEventArgs e) =>
             {
-                if (outputTextBox.Text == "Translation will be here...")
+                if (outputTextBox.Text == defaultTranslationText)
                 {
                     outputTextBox.Foreground = Brushes.Black;
                     outputTextBox.Text = string.Empty;
@@ -94,7 +100,7 @@ namespace EnglishHelper.Client
                 if (string.IsNullOrWhiteSpace(outputTextBox.Text))
                 {
                     outputTextBox.Foreground = Brushes.Gray;
-                    outputTextBox.Text = "Translation will be here...";
+                    outputTextBox.Text = defaultTranslationText;
                 }
             };
 
@@ -169,8 +175,17 @@ namespace EnglishHelper.Client
             if (ChangeLanguageButtonClick != null)
                 ChangeLanguageButtonClick(this, EventArgs.Empty);
         }
+
         private void translaleButton_Click(object sender, RoutedEventArgs e)
         {
+            //Check if there are nothing to translate
+            if (inputTextBox.Text == this.defaultSourceText)
+            {
+                Logger.LogWarning("Empty query! Please type words to translate.");
+                MessageManager.ShowWarning("Empty query! Please type words to translate.");
+                return;
+            }
+
             inputTextBox.Foreground = Brushes.Black;
             outputTextBox.Foreground = Brushes.Black;
 
@@ -180,12 +195,36 @@ namespace EnglishHelper.Client
 
         private void addToDictionaryButton_Click(object sender, RoutedEventArgs e)
         {
+            if (inputTextBox.Text == this.defaultSourceText)
+            {
+                Logger.LogWarning("Empty query! Please type words for adding to the dictionary.");
+                MessageManager.ShowWarning("Empty query! Please type words for adding to the dictionary.");
+                return;
+            }
+
             if (AddToDictionaryButtonClick != null)
                 AddToDictionaryButtonClick(this, EventArgs.Empty);
         }
 
         private void changeTextButton_Click(object sender, RoutedEventArgs e)
         {
+            if (inputTextBox.Text == defaultSourceText && outputTextBox.Text == defaultTranslationText)
+            {
+                Logger.LogWarning("Default texts on both textboxes! There are no text to change.");
+                return;
+            }
+
+            //Clean textboxes
+            if (inputTextBox.Text == defaultSourceText)
+            {
+                inputTextBox.Text = string.Empty;
+            }
+
+            if (outputTextBox.Text == defaultTranslationText)
+            {
+                outputTextBox.Text = string.Empty;
+            }
+
             inputTextBox.Foreground = Brushes.Black;
             outputTextBox.Foreground = Brushes.Black;
 
@@ -222,7 +261,6 @@ namespace EnglishHelper.Client
                 e.Cancel = false;
             }
         }
-
 
         #endregion
     }

@@ -280,19 +280,20 @@ namespace EnglishHelper.Client
 
         private void AddToDictionary()
         {
-            bool isAdded = dictionaryManager.AddWord(mainWindow.SourceText.Trim());
+            string word = mainWindow.SourceText.Trim();
+            bool isAdded = dictionaryManager.AddWord(word);
 
             if (isAdded)
             {
                 dictionaryManager.SaveDictionaryToFile();
 
-                Logger.LogInfo("Word '" + mainWindow.SourceText + "' was added to dictionary.");
-                MessageManager.ShowMessage("Word '" + mainWindow.SourceText + "' was added to dictionary.");
+                Logger.LogInfo("'" + word + "' was added to dictionary.");
+                MessageManager.ShowMessage("'" + word + "' was added to dictionary.");
             }
             else
             {
-                Logger.LogError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
-                MessageManager.ShowError("Word '" + mainWindow.SourceText + "' wasn't added to dictionary.");
+                Logger.LogError("'" + word + "' wasn't added to dictionary.");
+                MessageManager.ShowError("'" + word + "' wasn't added to dictionary.");
             }
         }
 

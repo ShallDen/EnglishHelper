@@ -61,6 +61,11 @@ namespace EnglishHelper.Client
             this.Show();
         }
 
+        public void CloseWindow()
+        {
+            PopupWindow_Closing(this, new System.ComponentModel.CancelEventArgs());
+        }
+
         private void MoveToCursorPosition()
         {
             var position = MouseHelper.GetMousePosition();
@@ -72,12 +77,12 @@ namespace EnglishHelper.Client
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
-            PopupWindow_Closing(sender, new System.ComponentModel.CancelEventArgs());
+            CloseWindow();
         }
 
         private void PopupWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromSeconds(2));
+            var anim = new DoubleAnimation(0, (Duration)TimeSpan.FromMilliseconds(500));
             anim.Completed += (s, _) => this.Close();
             this.BeginAnimation(UIElement.OpacityProperty, anim);
         }

@@ -7,11 +7,11 @@ using System.Windows;
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("EnglishHelper.Client")]
+[assembly: AssemblyTitle("English Helper Client")]
 [assembly: AssemblyDescription("English dictionary client")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ShallDen")]
-[assembly: AssemblyProduct("EnglishHelper.Client")]
+[assembly: AssemblyProduct("English Helper Client")]
 [assembly: AssemblyCopyright("Copyright © ShallDen 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

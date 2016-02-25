@@ -93,6 +93,8 @@ namespace EnglishHelper.Client
         {
             if (dictionaryWindow != null)
                 dictionaryWindow.CloseWindow();
+            if (MessageManager.Popup != null)
+                MessageManager.Popup.CloseWindow();
         }
 
         #endregion
